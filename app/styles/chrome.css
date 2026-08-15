@@ -1,0 +1,685 @@
+/* =============================================================
+   NEOYO — SITE CHROME
+   Loader · Cursor · Logo rail · Menu trigger · Fullscreen menu
+   Page-transition veil · Cinematic slideshow
+   ============================================================= */
+
+/* =============================================================
+   LOADER — first impression. Espresso ground, gold wordmark,
+   a hairline that fills. Lifts away as a curtain, never a spinner.
+   ============================================================= */
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-loader);
+  display: grid;
+  place-items: center;
+  background: var(--neoyo-espresso-veil);
+  transition: opacity var(--dur-cinema) var(--ease-veil),
+    visibility var(--dur-cinema) var(--ease-veil),
+    clip-path var(--dur-cinema) var(--ease-veil);
+  clip-path: inset(0 0 0 0);
+}
+
+.loader[data-state="done"] {
+  opacity: 0;
+  visibility: hidden;
+  clip-path: inset(0 0 100% 0);
+  pointer-events: none;
+}
+
+.loader__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.loader__mark {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 1rem + 3.4vw, 3.25rem);
+  font-weight: var(--weight-light);
+  letter-spacing: 0.42em;
+  text-indent: 0.42em; /* optical centring against the tracking */
+  color: var(--neoyo-gold-light);
+  animation: m-breath 2.6s var(--ease-cinema) infinite;
+}
+
+.loader__rule {
+  inline-size: clamp(6rem, 22vw, 13rem);
+  block-size: 1px;
+  background: color-mix(in srgb, var(--neoyo-gold) 30%, transparent);
+  overflow: hidden;
+}
+
+.loader__fill {
+  display: block;
+  block-size: 100%;
+  inline-size: 100%;
+  background: var(--neoyo-gold-light);
+  transform-origin: left center;
+  transform: scaleX(var(--loader-progress, 0));
+  transition: transform var(--dur-calm) var(--ease-glide);
+}
+
+.loader__word {
+  font-size: var(--text-hairline);
+  letter-spacing: var(--track-hairline);
+  text-transform: uppercase;
+  /* 62% is the floor that still clears AA on the espresso veil. */
+  color: color-mix(in srgb, var(--neoyo-bone-white) 62%, transparent);
+}
+
+/* =============================================================
+   CURSOR — a gold ring that trails a dot.
+   Precise pointers only; never rendered for touch or reduced motion.
+   ============================================================= */
+
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-cursor);
+  pointer-events: none;
+  /* No blend mode: difference/exclusion would throw the ring outside the
+     earth palette. Brownish Gold carries enough contrast on both bone
+     white and espresso to stay legible on every ground the site uses. */
+  color: var(--neoyo-gold);
+}
+
+.cursor__ring {
+  position: absolute;
+  inline-size: 2rem;
+  block-size: 2rem;
+  margin: -1rem 0 0 -1rem;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-pill);
+  transition: inline-size var(--dur-calm) var(--ease-glide),
+    block-size var(--dur-calm) var(--ease-glide),
+    margin var(--dur-calm) var(--ease-glide),
+    opacity var(--dur-quick) var(--ease-glide),
+    background var(--dur-calm) var(--ease-glide);
+}
+
+.cursor__dot {
+  position: absolute;
+  inline-size: 4px;
+  block-size: 4px;
+  margin: -2px 0 0 -2px;
+  border-radius: var(--radius-pill);
+  background: currentColor;
+  transition: opacity var(--dur-quick) var(--ease-glide),
+    transform var(--dur-calm) var(--ease-glide);
+}
+
+/* Over any interactive element the ring opens and the dot recedes */
+.cursor[data-state="link"] .cursor__ring {
+  inline-size: 3.75rem;
+  block-size: 3.75rem;
+  margin: -1.875rem 0 0 -1.875rem;
+  background: color-mix(in srgb, var(--neoyo-gold) 12%, transparent);
+}
+
+.cursor[data-state="link"] .cursor__dot {
+  opacity: 0;
+}
+
+/* Over imagery the ring becomes a "view" affordance */
+.cursor[data-state="view"] .cursor__ring {
+  inline-size: 5.5rem;
+  block-size: 5.5rem;
+  margin: -2.75rem 0 0 -2.75rem;
+  background: rgba(28, 17, 11, 0.42);
+  backdrop-filter: blur(2px);
+  border-color: color-mix(in srgb, var(--neoyo-gold-light) 70%, transparent);
+}
+
+.cursor[data-state="view"] .cursor__dot {
+  opacity: 0;
+}
+
+.cursor[data-state="hidden"] {
+  opacity: 0;
+}
+
+.cursor__label {
+  position: absolute;
+  inset-inline-start: 50%;
+  inset-block-start: 50%;
+  translate: -50% -50%;
+  font-size: var(--text-hairline);
+  letter-spacing: var(--track-hairline);
+  text-transform: uppercase;
+  color: var(--neoyo-bone-white);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity var(--dur-quick) var(--ease-glide);
+}
+
+.cursor[data-state="view"] .cursor__label {
+  opacity: 1;
+}
+
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .cursor {
+    display: none;
+  }
+}
+
+/* =============================================================
+   LOGO RAIL — fixed on the left edge. Very subtle.
+   Vertical on desktop, horizontal top-left on small screens.
+   ============================================================= */
+
+.rail {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: var(--rail-width);
+  z-index: var(--z-rail);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: var(--chrome-inset);
+  pointer-events: none;
+}
+
+.rail > * {
+  pointer-events: auto;
+}
+
+.rail__logo {
+  display: inline-flex;
+  align-items: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg); /* reads bottom-to-top */
+  font-family: var(--font-display);
+  font-size: clamp(0.9rem, 0.75rem + 0.5vw, 1.15rem);
+  font-weight: var(--weight-light);
+  letter-spacing: 0.52em;
+  text-indent: 0.52em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.9;
+  transition: color var(--dur-calm) var(--ease-glide),
+    opacity var(--dur-calm) var(--ease-glide);
+}
+
+.rail__logo:hover,
+.rail__logo:focus-visible {
+  color: var(--accent);
+  opacity: 1;
+}
+
+/* A hairline that runs the height of the rail — the "edge" of the page */
+.rail__line {
+  inline-size: 1px;
+  flex: 1;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--line-accent) 20%,
+    var(--line-accent) 80%,
+    transparent
+  );
+  margin-block: var(--space-md);
+}
+
+.rail__mark {
+  font-size: var(--text-hairline);
+  letter-spacing: var(--track-hairline);
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  writing-mode: vertical-rl;
+}
+
+/* Landing page renders the rail over imagery — force bone ink */
+.rail[data-over-media="true"] .rail__logo {
+  color: var(--neoyo-bone-white);
+  text-shadow: 0 1px 14px rgba(28, 17, 11, 0.5);
+}
+
+.rail[data-over-media="true"] .rail__mark {
+  color: color-mix(in srgb, var(--neoyo-bone-white) 60%, transparent);
+  text-shadow: 0 1px 14px rgba(28, 17, 11, 0.5);
+}
+
+/* --- Small screens: the rail lays down into the top-left corner --- */
+@media (max-width: 47.9375rem) {
+  .rail {
+    inset-block-end: auto;
+    inline-size: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--chrome-inset);
+  }
+
+  .rail__logo {
+    writing-mode: horizontal-tb;
+    transform: none;
+    letter-spacing: 0.42em;
+    text-indent: 0.42em;
+  }
+
+  .rail__line,
+  .rail__mark {
+    display: none;
+  }
+}
+
+/* =============================================================
+   MENU TRIGGER — top right. Two hairlines. Nothing else.
+   ============================================================= */
+
+.trigger {
+  position: fixed;
+  inset-block-start: var(--chrome-inset);
+  inset-inline-end: var(--chrome-inset);
+  z-index: var(--z-trigger);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 7px;
+  /* 44px minimum touch target, per WCAG 2.5.8 */
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  padding: 0;
+}
+
+.trigger__bar {
+  display: block;
+  block-size: 1px;
+  background: var(--ink);
+  transition: transform var(--dur-calm) var(--ease-silk),
+    inline-size var(--dur-calm) var(--ease-silk),
+    background var(--dur-calm) var(--ease-glide),
+    opacity var(--dur-quick) var(--ease-glide);
+}
+
+.trigger__bar:nth-child(1) {
+  inline-size: 1.75rem;
+}
+
+.trigger__bar:nth-child(2) {
+  inline-size: 1.1rem;
+}
+
+.trigger:hover .trigger__bar:nth-child(2),
+.trigger:focus-visible .trigger__bar:nth-child(2) {
+  inline-size: 1.75rem;
+}
+
+.trigger[data-over-media="true"] .trigger__bar {
+  background: var(--neoyo-bone-white);
+  box-shadow: 0 1px 10px rgba(28, 17, 11, 0.45);
+}
+
+/* Open state — the bars cross */
+.trigger[aria-expanded="true"] {
+  gap: 0;
+}
+
+.trigger[aria-expanded="true"] .trigger__bar {
+  background: var(--neoyo-bone-white);
+  box-shadow: none;
+  inline-size: 1.75rem;
+  position: absolute;
+}
+
+.trigger[aria-expanded="true"] .trigger__bar:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.trigger[aria-expanded="true"] .trigger__bar:nth-child(2) {
+  transform: rotate(-45deg);
+}
+
+/* =============================================================
+   MENU — opens full screen over an espresso ground.
+   Hovering an item raises a large cinematic preview behind it.
+   ============================================================= */
+
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-menu);
+  background: var(--neoyo-espresso-veil);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity var(--dur-calm) var(--ease-silk),
+    visibility var(--dur-calm) var(--ease-silk);
+}
+
+.menu[data-open="true"] {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* --- Preview layer — sits behind the list ------------------------ */
+.menu__previews {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.menu__preview {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.08);
+  transition: opacity var(--dur-cinema) var(--ease-cinema),
+    transform var(--dur-epic) var(--ease-glide);
+}
+
+.menu__preview[data-active="true"] {
+  opacity: 0.42;
+  transform: scale(1);
+}
+
+/* Preview is only a whisper behind the type; keep contrast safe */
+.menu__previews::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    rgba(28, 17, 11, 0.92) 0%,
+    rgba(28, 17, 11, 0.7) 46%,
+    rgba(28, 17, 11, 0.5) 100%
+  );
+}
+
+/* --- Menu body --------------------------------------------------- */
+.menu__inner {
+  position: relative;
+  z-index: 1;
+  block-size: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding-block: calc(var(--chrome-inset) + 3rem) var(--chrome-inset);
+  padding-inline: max(var(--gutter), var(--rail-width));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.menu__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-md);
+  /* 54% clears AA on the espresso veil; 46% did not. */
+  color: color-mix(in srgb, var(--neoyo-bone-white) 54%, transparent);
+}
+
+.menu__list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(0.1rem, 0.4vh, 0.6rem);
+  padding-block: var(--space-lg);
+}
+
+.menu__item {
+  overflow: hidden;
+}
+
+.menu__link {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(var(--space-sm), 3vw, var(--space-xl));
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 1rem + 4.6vw, 5rem);
+  font-weight: var(--weight-light);
+  letter-spacing: var(--track-hero);
+  line-height: 1.18;
+  color: color-mix(in srgb, var(--neoyo-bone-white) 82%, transparent);
+  /* Each item lifts in on open, staggered */
+  transform: translate3d(0, 110%, 0);
+  transition: transform var(--dur-slow) var(--ease-silk),
+    color var(--dur-calm) var(--ease-glide),
+    opacity var(--dur-calm) var(--ease-glide);
+  transition-delay: calc(var(--menu-index, 0) * 45ms);
+}
+
+.menu[data-open="true"] .menu__link {
+  transform: translate3d(0, 0, 0);
+}
+
+.menu__index {
+  font-family: var(--font-body);
+  font-size: var(--text-hairline);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--track-hairline);
+  color: color-mix(in srgb, var(--neoyo-gold-light) 70%, transparent);
+  /* Hold the numeral on the cap-height of the serif beside it */
+  align-self: center;
+  flex: none;
+  inline-size: 2.5rem;
+}
+
+.menu__link:hover,
+.menu__link:focus-visible {
+  color: var(--neoyo-bone-white);
+}
+
+/* On desktop, siblings recede so the hovered item is the only subject */
+@media (hover: hover) and (pointer: fine) {
+  .menu__list:hover .menu__link:not(:hover) {
+    opacity: 0.34;
+  }
+}
+
+.menu__foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-md);
+  padding-block-start: var(--space-md);
+  border-block-start: var(--border-hair) solid
+    color-mix(in srgb, var(--neoyo-bone-white) 12%, transparent);
+  color: color-mix(in srgb, var(--neoyo-bone-white) 52%, transparent);
+}
+
+.menu__contact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+}
+
+.menu__social {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.menu__foot a:hover,
+.menu__foot a:focus-visible {
+  color: var(--neoyo-gold-light);
+}
+
+/* Small screens: the rail is horizontal, so drop the reserved rail width */
+@media (max-width: 47.9375rem) {
+  .menu__inner {
+    padding-inline: var(--gutter);
+  }
+}
+
+/* On short viewports the list scrolls rather than compressing */
+@media (max-height: 40rem) {
+  .menu__list {
+    justify-content: flex-start;
+  }
+  .menu__link {
+    font-size: clamp(1.5rem, 1rem + 3vw, 2.5rem);
+  }
+}
+
+/* =============================================================
+   VEIL — page transitions.
+   A bone or espresso curtain wipes up, the next page is already
+   painted beneath it. Nothing ever "loads" in view.
+   ============================================================= */
+
+.veil {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-veil);
+  background: var(--neoyo-espresso-veil);
+  pointer-events: none;
+  transform-origin: bottom center;
+  transform: scaleY(0);
+  visibility: hidden;
+}
+
+/* HOLD — the curtain is down, painted in a single frame with no
+   transition. The incoming page renders underneath it, unseen. */
+.veil[data-phase="hold"] {
+  visibility: visible;
+  transform-origin: top center;
+  transform: scaleY(1);
+  transition: none;
+}
+
+.veil[data-phase="hold"] .veil__mark {
+  opacity: 1;
+  transition: none;
+}
+
+.veil[data-phase="cover"] {
+  visibility: visible;
+  transform-origin: bottom center;
+  transform: scaleY(1);
+  transition: transform var(--dur-calm) var(--ease-veil);
+}
+
+.veil[data-phase="reveal"] {
+  visibility: visible;
+  transform-origin: top center;
+  transform: scaleY(0);
+  transition: transform var(--dur-slow) var(--ease-veil);
+}
+
+.veil__mark {
+  position: absolute;
+  inset-inline-start: 50%;
+  inset-block-start: 50%;
+  translate: -50% -50%;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 0.8rem + 1.4vw, 1.75rem);
+  font-weight: var(--weight-light);
+  letter-spacing: 0.46em;
+  text-indent: 0.46em;
+  color: var(--neoyo-gold-light);
+  opacity: 0;
+  transition: opacity var(--dur-quick) var(--ease-glide);
+}
+
+.veil[data-phase="cover"] .veil__mark {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .veil {
+    display: none;
+  }
+}
+
+/* =============================================================
+   SLIDESHOW — the landing film.
+   Full-bleed. 5s dwell, 1.8s crossfade, slow Ken Burns push.
+   Only two layers are ever composited at once.
+   ============================================================= */
+
+.film {
+  position: relative;
+  inline-size: 100%;
+  /* svh keeps mobile browser chrome from cropping the frame */
+  block-size: 100svh;
+  overflow: hidden;
+  background: var(--neoyo-espresso-veil);
+}
+
+.film__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--slide-fade) var(--ease-cinema);
+  will-change: opacity;
+}
+
+.film__slide[data-active="true"] {
+  opacity: 1;
+}
+
+/* A soft vignette so type stays legible over any frame */
+.film__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: radial-gradient(
+      120% 100% at 50% 40%,
+      transparent 30%,
+      rgba(28, 17, 11, 0.34) 100%
+    ),
+    linear-gradient(to bottom, rgba(28, 17, 11, 0.42) 0%, transparent 26%, transparent 58%, rgba(28, 17, 11, 0.6) 100%);
+}
+
+/* --- Slide counter and category, bottom right ------------------- */
+.film__meta {
+  position: absolute;
+  z-index: 6;
+  inset-block-end: calc(var(--chrome-inset) + 4.5rem);
+  inset-inline-end: var(--chrome-inset);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--neoyo-bone-white);
+  /* The film's subject changes under this label, so contrast cannot be
+     guaranteed by the ground alone — the shadow carries it. */
+  text-shadow: 0 1px 14px rgba(28, 17, 11, 0.85);
+  text-align: right;
+}
+
+.film__progress {
+  inline-size: clamp(2.5rem, 8vw, 5rem);
+  block-size: 1px;
+  background: color-mix(in srgb, var(--neoyo-bone-white) 26%, transparent);
+  overflow: hidden;
+  flex: none;
+}
+
+.film__progress span {
+  display: block;
+  block-size: 100%;
+  background: var(--neoyo-gold-light);
+  transform-origin: left center;
+  animation: m-slide-progress var(--slide-hold) linear infinite;
+}
+
+@keyframes m-slide-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .film__progress span {
+    animation: none;
+    transform: scaleX(1);
+  }
+}
+
+@media (max-width: 47.9375rem) {
+  .film__meta {
+    inset-block-end: calc(var(--chrome-inset) + 5.5rem);
+  }
+}

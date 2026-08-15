@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- NEOYO monogram: brownish gold on bone white, per the brand boards. -->
+  <rect width="64" height="64" fill="#F2ECDE"/>
+  <path d="M18 46V18h5.4l17.2 19.3V18H46v28h-5.4L23.4 26.7V46H18Z" fill="#A9824B"/>
+</svg>

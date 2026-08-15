@@ -1,0 +1,10 @@
+/* NEOYO — stylesheet entry.
+   Order matters: tokens define the vocabulary, base sets the
+   ground, motion defines behaviour, components and pages consume. */
+
+@import "./styles/tokens.css";
+@import "./styles/base.css";
+@import "./styles/motion.css";
+@import "./styles/components.css";
+@import "./styles/chrome.css";
+@import "./styles/pages.css";

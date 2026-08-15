@@ -1,0 +1,246 @@
+/* =============================================================
+   NEOYO — DESIGN TOKENS
+   Source of truth. Derived from the official NEOYO Color System.
+   Nothing in this codebase should hard-code a colour, duration,
+   easing curve, or type size. Everything reads from here.
+   ============================================================= */
+
+:root {
+  /* ---------------------------------------------------------
+     1. BRAND PALETTE — verbatim from NEOYO Color System board
+     --------------------------------------------------------- */
+  --neoyo-bone-white: #f2ecde; /* PRIMARY — dominant surface (80%) */
+  --neoyo-gold: #a9824b; /* PRIMARY — logo, accents, hardware   */
+  --neoyo-gold-light: #cbae7c; /* TONAL — highlights, hairlines      */
+  --neoyo-gold-deep: #8a6a3a; /* TONAL — pressed states, depth      */
+  --neoyo-bone-shadow: #e9e0cc; /* TONAL — recessed surfaces          */
+  --neoyo-espresso: #2b1b12; /* SECONDARY — dark mode, hi-contrast */
+
+  /* ---------------------------------------------------------
+     2. EXTENDED NEUTRALS — interpolated within the earth family.
+        Never introduce a hue outside this range.
+     --------------------------------------------------------- */
+  --neoyo-ivory: #fbf8f1; /* lifted bone — light on light      */
+  --neoyo-cream: #f7f2e7; /* card surface on bone              */
+  --neoyo-stone: #b8ae9c; /* DECORATIVE ONLY — 1.9:1 on bone   */
+  --neoyo-espresso-soft: #3a2619; /* elevated surface in dark mode     */
+  --neoyo-espresso-veil: #1c110b; /* deepest ground, loader, veil      */
+
+  /* Text-safe neutrals. The earth family reads beautifully but runs
+     light, so anything that carries words uses one of these three.
+     Ratios are measured against Bone White (#F2ECDE). */
+  --neoyo-taupe: #736958; /* 4.6:1 — metadata, eyebrows, captions */
+  --neoyo-taupe-deep: #5f5648; /* 6.1:1 — body copy                    */
+  --neoyo-bronze-ink: #6e5228; /* 6.2:1 — gold-family text, errors     */
+
+  /* ---------------------------------------------------------
+     3. SEMANTIC SURFACE TOKENS — LIGHT (museum daylight)
+        Components consume ONLY these, never the raw palette.
+     --------------------------------------------------------- */
+  --surface: var(--neoyo-bone-white);
+  --surface-raised: var(--neoyo-cream);
+  --surface-recessed: var(--neoyo-bone-shadow);
+  --surface-inverse: var(--neoyo-espresso);
+  --surface-veil: var(--neoyo-espresso-veil);
+
+  --ink: var(--neoyo-espresso); /* headlines, primary text  15.8:1 */
+  --ink-muted: var(--neoyo-taupe-deep); /* body copy         6.1:1 */
+  --ink-faint: var(--neoyo-taupe); /* metadata, captions     4.6:1 */
+  --ink-inverse: var(--neoyo-bone-white);
+
+  /* Gold splits in two. `--accent` and `--accent-deep` are the brand
+     values and are used for hardware, rules, fills and edges. Text set
+     in gold uses `--accent-ink`, because Brownish Gold reaches only
+     3.3:1 on bone white and Gold — Deep only 4.2:1. */
+  --accent: var(--neoyo-gold);
+  --accent-soft: var(--neoyo-gold-light);
+  --accent-deep: var(--neoyo-gold-deep); /* decorative — not for copy */
+  --accent-ink: var(--neoyo-bronze-ink); /* gold text          6.2:1 */
+
+  --line: color-mix(in srgb, var(--neoyo-espresso) 12%, transparent);
+  --line-soft: color-mix(in srgb, var(--neoyo-espresso) 7%, transparent);
+  --line-accent: color-mix(in srgb, var(--neoyo-gold) 42%, transparent);
+
+  /* Focus ring — visible against both bone and espresso grounds */
+  --focus-ring: var(--neoyo-gold-deep);
+
+  /* ---------------------------------------------------------
+     4. LIGHTING — warm museum lighting, soft shadows.
+        Shadows are warm-tinted; never neutral grey/black.
+     --------------------------------------------------------- */
+  --shadow-whisper: 0 1px 2px color-mix(in srgb, var(--neoyo-espresso) 4%, transparent);
+  --shadow-soft: 0 2px 8px color-mix(in srgb, var(--neoyo-espresso) 5%, transparent),
+    0 8px 28px color-mix(in srgb, var(--neoyo-espresso) 5%, transparent);
+  --shadow-lifted: 0 4px 16px color-mix(in srgb, var(--neoyo-espresso) 6%, transparent),
+    0 24px 64px color-mix(in srgb, var(--neoyo-espresso) 8%, transparent);
+  --shadow-gallery: 0 40px 120px color-mix(in srgb, var(--neoyo-espresso) 12%, transparent);
+
+  /* Warm key light used as an overlay on imagery */
+  --light-key: radial-gradient(
+    120% 90% at 28% 12%,
+    color-mix(in srgb, var(--neoyo-gold-light) 26%, transparent) 0%,
+    transparent 62%
+  );
+
+  /* ---------------------------------------------------------
+     5. TYPOGRAPHY
+        Display : large elegant serif  (Cormorant Garamond)
+        Body    : simple quiet sans    (Inter)
+     --------------------------------------------------------- */
+  --font-display: var(--font-cormorant), "Cormorant Garamond", "Times New Roman", serif;
+  --font-body: var(--font-inter), Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Fluid type scale — clamp(min, preferred, max).
+     Scales continuously from 360px to 1600px viewports. */
+  --text-hairline: clamp(0.625rem, 0.58rem + 0.18vw, 0.6875rem); /* 10 → 11  */
+  --text-caption: clamp(0.6875rem, 0.64rem + 0.2vw, 0.75rem); /* 11 → 12  */
+  --text-label: clamp(0.75rem, 0.7rem + 0.22vw, 0.8125rem); /* 12 → 13  */
+  --text-body: clamp(0.875rem, 0.83rem + 0.24vw, 1rem); /* 14 → 16  */
+  --text-body-lg: clamp(1rem, 0.94rem + 0.3vw, 1.1875rem); /* 16 → 19  */
+  --text-title: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem); /* 24 → 36  */
+  --text-display: clamp(2.25rem, 1.4rem + 4.2vw, 4.5rem); /* 36 → 72  */
+  --text-hero: clamp(3rem, 1.2rem + 8vw, 9rem); /* 48 → 144 */
+  --text-monument: clamp(4rem, 0.5rem + 15vw, 16rem); /* 64 → 256 */
+
+  /* Tracking — luxury type is wide at small sizes, tight at large */
+  --track-monument: -0.045em;
+  --track-hero: -0.035em;
+  --track-display: -0.025em;
+  --track-title: -0.015em;
+  --track-body: 0;
+  --track-label: 0.16em;
+  --track-hairline: 0.34em; /* logo, eyebrow labels */
+
+  --leading-tight: 0.92;
+  --leading-display: 1.04;
+  --leading-title: 1.18;
+  --leading-body: 1.72;
+  --leading-loose: 1.95;
+
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+
+  /* ---------------------------------------------------------
+     6. SPACE — 4px base, geometric growth.
+        Whitespace is the product. Prefer the larger step.
+     --------------------------------------------------------- */
+  --space-3xs: 0.25rem; /*  4 */
+  --space-2xs: 0.5rem; /*  8 */
+  --space-xs: 0.75rem; /* 12 */
+  --space-sm: 1rem; /* 16 */
+  --space-md: 1.5rem; /* 24 */
+  --space-lg: 2.5rem; /* 40 */
+  --space-xl: 4rem; /* 64 */
+  --space-2xl: 6rem; /* 96 */
+  --space-3xl: 9rem; /* 144 */
+  --space-4xl: 14rem; /* 224 */
+
+  /* Fluid page gutter and section rhythm */
+  --gutter: clamp(1.25rem, 0.6rem + 3.2vw, 4.5rem);
+  --section-gap: clamp(5rem, 2rem + 14vw, 16rem);
+  --measure: 34ch; /* optimal reading width */
+  --measure-wide: 52ch;
+  --page-max: 96rem;
+
+  /* Fixed chrome metrics */
+  --rail-width: clamp(3rem, 1.5rem + 4vw, 6rem); /* left logo rail */
+  --chrome-inset: clamp(1.25rem, 0.6rem + 2.4vw, 2.75rem);
+
+  /* ---------------------------------------------------------
+     7. MOTION — Apple-keynote glide. Nothing snaps. Nothing bounces.
+        Long durations, deep ease-outs, generous stagger.
+     --------------------------------------------------------- */
+  --ease-glide: cubic-bezier(0.22, 1, 0.36, 1); /* default exit curve  */
+  --ease-veil: cubic-bezier(0.65, 0, 0.35, 1); /* symmetric wipes     */
+  --ease-cinema: cubic-bezier(0.4, 0, 0.1, 1); /* slideshow crossfade */
+  --ease-silk: cubic-bezier(0.16, 1, 0.3, 1); /* menu, large panels  */
+
+  --dur-instant: 120ms;
+  --dur-quick: 260ms;
+  --dur-calm: 520ms;
+  --dur-slow: 900ms;
+  --dur-cinema: 1400ms;
+  --dur-epic: 2200ms;
+
+  --stagger: 70ms; /* per-item delay in sequences */
+  --slide-hold: 5000ms; /* slideshow dwell — per brief  */
+  --slide-fade: 1800ms; /* slideshow crossfade length   */
+
+  /* ---------------------------------------------------------
+     8. FORM — luxury geometry is nearly square. Radius is a whisper.
+     --------------------------------------------------------- */
+  --radius-none: 0;
+  --radius-hair: 1px;
+  --radius-soft: 2px;
+  --radius-pill: 999px;
+  --border-hair: 1px;
+
+  /* ---------------------------------------------------------
+     9. LAYERS
+     --------------------------------------------------------- */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-rail: 40;
+  --z-trigger: 60;
+  --z-menu: 70;
+  --z-veil: 80;
+  --z-loader: 90;
+  --z-cursor: 100;
+}
+
+/* =============================================================
+   DARK GROUND — "night mode" per the Color System board:
+   Espresso Brown anchors dark-mode moments and high-contrast text.
+   Applied per-section via [data-ground="dark"], and globally when
+   the visitor's system prefers dark.
+   ============================================================= */
+[data-ground="dark"] {
+  --surface: var(--neoyo-espresso);
+  --surface-raised: var(--neoyo-espresso-soft);
+  --surface-recessed: var(--neoyo-espresso-veil);
+  --surface-inverse: var(--neoyo-bone-white);
+
+  --ink: var(--neoyo-bone-white); /* 15.8:1 on espresso */
+  /* Mixes are floored at the ratio that still clears AA on espresso:
+     78% → 8.9:1, 56% → 5.3:1. Below ~50% the copy stops being readable. */
+  --ink-muted: color-mix(in srgb, var(--neoyo-bone-white) 78%, var(--neoyo-espresso));
+  --ink-faint: color-mix(in srgb, var(--neoyo-bone-white) 56%, var(--neoyo-espresso));
+  --ink-inverse: var(--neoyo-espresso);
+
+  /* On the dark ground the relationship inverts: Gold — Light carries
+     text comfortably, so `--accent-ink` lifts rather than deepens. */
+  --accent: var(--neoyo-gold-light);
+  --accent-soft: color-mix(in srgb, var(--neoyo-gold-light) 70%, var(--neoyo-bone-white));
+  --accent-deep: var(--neoyo-gold);
+  --accent-ink: var(--neoyo-gold-light); /* 7.4:1 on espresso */
+
+  --line: color-mix(in srgb, var(--neoyo-bone-white) 14%, transparent);
+  --line-soft: color-mix(in srgb, var(--neoyo-bone-white) 8%, transparent);
+  --line-accent: color-mix(in srgb, var(--neoyo-gold-light) 46%, transparent);
+
+  --focus-ring: var(--neoyo-gold-light);
+
+  --shadow-soft: 0 2px 8px rgb(0 0 0 / 0.3), 0 8px 28px rgb(0 0 0 / 0.24);
+  --shadow-lifted: 0 4px 16px rgb(0 0 0 / 0.34), 0 24px 64px rgb(0 0 0 / 0.4);
+  --shadow-gallery: 0 40px 120px rgb(0 0 0 / 0.5);
+}
+
+/* Light ground can be forced back on inside a dark parent */
+[data-ground="light"] {
+  --surface: var(--neoyo-bone-white);
+  --surface-raised: var(--neoyo-cream);
+  --surface-recessed: var(--neoyo-bone-shadow);
+  --surface-inverse: var(--neoyo-espresso);
+  --ink: var(--neoyo-espresso);
+  --ink-muted: var(--neoyo-taupe-deep);
+  --ink-faint: var(--neoyo-taupe);
+  --ink-inverse: var(--neoyo-bone-white);
+  --accent: var(--neoyo-gold);
+  --accent-soft: var(--neoyo-gold-light);
+  --accent-deep: var(--neoyo-gold-deep);
+  --accent-ink: var(--neoyo-bronze-ink);
+  --line: color-mix(in srgb, var(--neoyo-espresso) 12%, transparent);
+  --line-soft: color-mix(in srgb, var(--neoyo-espresso) 7%, transparent);
+  --focus-ring: var(--neoyo-gold-deep);
+}

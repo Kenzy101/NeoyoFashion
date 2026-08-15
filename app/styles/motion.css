@@ -1,0 +1,256 @@
+/* =============================================================
+   NEOYO — MOTION SYSTEM
+   Principle: nothing snaps, nothing bounces, nothing bumps.
+   Everything glides in on a deep ease-out and settles.
+   Reference: an Apple keynote build, not a fashion carousel.
+   ============================================================= */
+
+/* -------------------------------------------------------------
+   SCROLL REVEAL
+   Elements marked [data-reveal] start hidden and are released by
+   IntersectionObserver, which sets data-revealed="true".
+   Stagger is driven by --reveal-index set inline per item.
+   ------------------------------------------------------------- */
+[data-reveal] {
+  opacity: 0;
+  will-change: opacity, transform;
+  transition: opacity var(--dur-cinema) var(--ease-glide),
+    transform var(--dur-cinema) var(--ease-glide),
+    filter var(--dur-cinema) var(--ease-glide);
+  transition-delay: calc(var(--reveal-index, 0) * var(--stagger));
+}
+
+[data-reveal="rise"] {
+  transform: translate3d(0, 2.5rem, 0);
+}
+[data-reveal="rise-far"] {
+  transform: translate3d(0, 6rem, 0);
+}
+[data-reveal="fade"] {
+  transform: none;
+}
+[data-reveal="drift-left"] {
+  transform: translate3d(2.5rem, 0, 0);
+}
+[data-reveal="drift-right"] {
+  transform: translate3d(-2.5rem, 0, 0);
+}
+/* Imagery settles out of a slight over-scale — the "print developing" feel.
+   `overflow: clip` keeps the pre-scale from widening the page: a
+   full-bleed child at scale(1.04) would otherwise stick 2% past each
+   edge until it resolves. `clip` (not `hidden`) is used so no scroll
+   container is created and sticky descendants keep working. */
+[data-reveal="develop"] {
+  transform: scale(1.04);
+  filter: blur(6px);
+  overflow: clip;
+}
+/* Large serif headlines lift from below a mask */
+[data-reveal="lift"] {
+  transform: translate3d(0, 0.4em, 0);
+}
+
+[data-reveal][data-revealed="true"] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Masked line-lift: wrap a line in .m-mask and the child in .m-mask__inner */
+.m-mask {
+  display: block;
+  overflow: hidden;
+  /* Serif descenders need breathing room or they clip */
+  padding-block-end: 0.12em;
+  margin-block-end: -0.12em;
+}
+
+.m-mask__inner {
+  display: block;
+  transform: translate3d(0, 110%, 0);
+  transition: transform var(--dur-cinema) var(--ease-glide);
+  transition-delay: calc(var(--reveal-index, 0) * var(--stagger));
+}
+
+[data-revealed="true"] .m-mask__inner,
+.m-mask__inner[data-revealed="true"] {
+  transform: translate3d(0, 0, 0);
+}
+
+/* -------------------------------------------------------------
+   KEYFRAMES
+   ------------------------------------------------------------- */
+
+@keyframes m-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes m-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Ken Burns — the slideshow's slow push. Barely perceptible by design. */
+@keyframes m-kenburns {
+  from {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.11) translate3d(-1.2%, -0.8%, 0);
+  }
+}
+
+@keyframes m-kenburns-alt {
+  from {
+    transform: scale(1.1) translate3d(1%, 0.6%, 0);
+  }
+  to {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+}
+
+/* Silk — fabric pages. A slow, uneven flow, never a loop you can spot. */
+@keyframes m-silk {
+  0% {
+    transform: translate3d(-6%, 0, 0) skewY(0deg) scale(1.16);
+  }
+  33% {
+    transform: translate3d(0%, -2%, 0) skewY(-1.1deg) scale(1.2);
+  }
+  66% {
+    transform: translate3d(5%, 1.5%, 0) skewY(0.8deg) scale(1.14);
+  }
+  100% {
+    transform: translate3d(-6%, 0, 0) skewY(0deg) scale(1.16);
+  }
+}
+
+/* Sheen — the gold traversal across hardware, foil and buttons */
+@keyframes m-sheen {
+  from {
+    transform: translate3d(-120%, 0, 0) rotate(14deg);
+  }
+  to {
+    transform: translate3d(320%, 0, 0) rotate(14deg);
+  }
+}
+
+/* Ticker — customer reviews crawl */
+@keyframes m-ticker {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Breath — the loader mark and idle accents */
+@keyframes m-breath {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Draw — hairline rules that extend on reveal */
+@keyframes m-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Rotate — 360° viewer idle hint */
+@keyframes m-nudge {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(6px, 0, 0);
+  }
+}
+
+/* -------------------------------------------------------------
+   MOTION UTILITIES
+   ------------------------------------------------------------- */
+
+.m-hairline {
+  display: block;
+  height: 1px;
+  background: var(--line);
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform var(--dur-epic) var(--ease-glide);
+}
+
+[data-revealed="true"] .m-hairline,
+.m-hairline[data-revealed="true"] {
+  transform: scaleX(1);
+}
+
+/* Underline that grows from the left on hover — used on all text links */
+.m-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.m-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.18em;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform var(--dur-calm) var(--ease-glide);
+}
+
+.m-underline:hover::after,
+.m-underline:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* Imagery that pushes in slightly on hover */
+.m-push {
+  overflow: hidden;
+}
+
+.m-push > * {
+  transition: transform var(--dur-epic) var(--ease-glide);
+}
+
+.m-push:hover > *,
+.m-push:focus-within > * {
+  transform: scale(1.045);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m-hairline {
+    transform: scaleX(1);
+  }
+  .m-mask__inner {
+    transform: none !important;
+  }
+  .m-push:hover > * {
+    transform: none;
+  }
+}
