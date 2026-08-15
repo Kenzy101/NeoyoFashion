@@ -57,6 +57,23 @@
   background-blend-mode: multiply, screen, normal;
 }
 
+/* Vignette. Every tone gets the same falloff, which is what stops the
+   procedural grounds reading as flat gradients and gives them the depth
+   of a lit set. It survives when real photography lands, so placeholder
+   and photograph share one lighting signature. */
+.plate__ground::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      104% 88% at 46% 38%,
+      transparent 30%,
+      rgba(43, 27, 18, 0.16) 68%,
+      rgba(43, 27, 18, 0.38) 100%
+    ),
+    linear-gradient(197deg, rgba(255, 251, 240, 0.16) 0%, transparent 42%);
+}
+
 .plate[data-tone="bone"] .plate__ground {
   background-image: radial-gradient(
       110% 80% at 30% 8%,

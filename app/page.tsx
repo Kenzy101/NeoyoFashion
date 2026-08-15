@@ -27,11 +27,9 @@ export default function Landing() {
         <p className="landing__tagline">{BRAND.tagline}</p>
       </div>
 
-      <div className="landing__scroll" aria-hidden="true">
-        <span className="u-hairline" style={{ color: "inherit" }}>
-          {BRAND.city}
-        </span>
-      </div>
+      {/* No scroll cue: the landing is exactly one viewport and does not
+          scroll, so an invitation to scroll would be a lie — and it sat
+          on top of the tagline. The city is carried by the logo rail. */}
 
       <div className="landing__ticker">
         <Ticker duration={90} />

@@ -15,7 +15,7 @@
 .landing__word {
   position: absolute;
   z-index: 6;
-  inset-inline-start: max(var(--gutter), var(--rail-width));
+  inset-inline-start: max(var(--gutter), calc(var(--rail-width) + var(--space-md)));
   inset-inline-end: var(--gutter);
   inset-block-end: calc(var(--chrome-inset) + 7.5rem);
   display: flex;
@@ -64,41 +64,12 @@
   color: color-mix(in srgb, var(--neoyo-bone-white) 52%, transparent);
 }
 
-/* Scroll invitation — a hairline that breathes downward */
-.landing__scroll {
-  position: absolute;
-  z-index: 6;
-  inset-inline-start: 50%;
-  translate: -50% 0;
-  inset-block-end: calc(var(--chrome-inset) + 4rem);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2xs);
-  color: color-mix(in srgb, var(--neoyo-bone-white) 52%, transparent);
-}
-
-.landing__scroll::after {
-  content: "";
-  inline-size: 1px;
-  block-size: 2.5rem;
-  background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--neoyo-gold-light) 80%, transparent),
-    transparent
-  );
-  animation: m-breath 3.2s var(--ease-cinema) infinite;
-}
-
 @media (max-width: 47.9375rem) {
   .landing__word {
     /* The rail is horizontal at this width, so the tagline returns to the
        normal gutter instead of clearing a left edge that is no longer there. */
     inset-inline-start: var(--gutter);
     inset-block-end: calc(var(--chrome-inset) + 8.5rem);
-  }
-  .landing__scroll {
-    display: none;
   }
 }
 
@@ -234,7 +205,29 @@
   text-align: center;
 }
 
+/* A scrim behind the quote. Bleed plates run from bone white to espresso
+   depending on the collection's tone, so the type cannot rely on the
+   photograph for contrast — this guarantees it on every register. */
+.bleed__quote::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* A full-width horizontal band, not an ellipse. A radial scrim reads as
+     a smudge sitting on the photograph; a band reads as the set falling
+     into shadow, which is the same language as the plate's own vignette.
+     0.55 at the centre holds large type above 3:1 on the brightest tone. */
+  background: linear-gradient(
+    to bottom,
+    rgba(28, 17, 11, 0.14) 0%,
+    rgba(28, 17, 11, 0.5) 32%,
+    rgba(28, 17, 11, 0.55) 50%,
+    rgba(28, 17, 11, 0.5) 68%,
+    rgba(28, 17, 11, 0.14) 100%
+  );
+}
+
 .bleed__quote p {
+  position: relative;
   font-family: var(--font-display);
   font-style: italic;
   font-size: var(--text-display);
@@ -242,7 +235,7 @@
   line-height: 1.25;
   color: var(--neoyo-bone-white);
   max-width: 22ch;
-  text-shadow: 0 2px 40px rgba(28, 17, 11, 0.5);
+  text-shadow: 0 2px 40px rgba(28, 17, 11, 0.55);
 }
 
 /* =============================================================

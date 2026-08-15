@@ -248,9 +248,10 @@ p {
   padding-inline: var(--gutter);
 }
 
-/* Content that must clear the fixed left logo rail on desktop. */
+/* Content that must clear the fixed left logo rail on desktop.
+   The rail's own width plus a step, so type never sits flush against it. */
 .u-page--railed {
-  padding-inline-start: max(var(--gutter), var(--rail-width));
+  padding-inline-start: max(var(--gutter), calc(var(--rail-width) + var(--space-md)));
 }
 
 /* Below 48rem the rail lays down into the top-left corner (see chrome.css),
