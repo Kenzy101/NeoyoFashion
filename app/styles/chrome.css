@@ -690,7 +690,8 @@
 
 /* Portrait photography on a landscape screen is shown whole. On a fashion
    site the cut of the garment is the subject — cropping a dress in half to
-   fill the frame defeats the point. The bed fills the margins. */
+   fill the frame defeats the point, and the letterbox is the cinematic
+   register the house wants. The bed fills the margins. */
 @media (orientation: landscape) {
   .cine__slide[data-orient="portrait"] .cine__media {
     object-fit: contain;

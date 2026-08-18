@@ -20,8 +20,10 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 2333,
     "height": 3500,
     "widths": [
-      900,
-      1600
+      800,
+      1400,
+      2000,
+      2333
     ],
     "lqip": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAACwBQCdASoWACEAPuFkok4opiMiNVv8ARAcCWcAzrAhYXm9yewBmam9nI4etBo6EkMPfljlpIAA/uqC/IgVMFSbPOzKHlJgv99JH7db7DLDaoZlPSCSTZNUyOvtJDEGl5mkxX7+ociZAAAA"
   },
@@ -32,8 +34,10 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 2333,
     "height": 3500,
     "widths": [
-      900,
-      1600
+      800,
+      1400,
+      2000,
+      2333
     ],
     "lqip": "data:image/webp;base64,UklGRp4AAABXRUJQVlA4IJIAAADwBQCdASoWACEAPulmpk4pJiOiNVv4ASAdCWQAt7ghX+PgpK8b19ST+iKt/YuPlChiGu5Yd5cEIAD+8qtYyNsEu+HpJaqyydSjX8yn7ZtiOI6GRcE0fQbBD91rD6qyqzIuOwHozx0Pka2tKYZZ9bmj+3VxVMdlLDJBdFGCM9meN8cohwNF94KZzipvFoLEIXAAAA=="
   },
@@ -44,8 +48,10 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 2333,
     "height": 3500,
     "widths": [
-      900,
-      1600
+      800,
+      1400,
+      2000,
+      2333
     ],
     "lqip": "data:image/webp;base64,UklGRrQAAABXRUJQVlA4IKgAAACwBQCdASoWACEAPvVssFAqpiSiqqoBUB6JYgCdM1XBh6VdEAn6QAeE5mgsuIrUoKGW40IKZtAA0gYiyUrIEokqqfcyFedVwqWCvfk1Yfe+uQYZWv6pUJfQrOcJwoc4N0NhAUzSlI48+xIm2uGS5s3hjH3SUcxskjEAVByUgNSOT9rNseUp9U5q4v73Sfwd60+LEIchwwNPShWgu03OkUhUrr06cEcAAAA="
   },
@@ -56,8 +62,10 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 2333,
     "height": 3500,
     "widths": [
-      900,
-      1600
+      800,
+      1400,
+      2000,
+      2333
     ],
     "lqip": "data:image/webp;base64,UklGRrAAAABXRUJQVlA4IKQAAADwBQCdASoWACEAPvVorU6qpiSiMBVaqVAeiUAVJPFAHCuy4wkzMMzVCdrFJCOcgzNjwWnoaxdGAAD+12mejNcR2h4qCa8zwien/SUHf3hGcZolO0DRpxkMVqEVo9hDy7bASe41QHjHR/CM6YdwmLcYQOkF8IHOMIR35OhBoFrW2amf7L5AflAP7ih+1/rYuEJ5UH4585zxwBCQ0XMbaGjAcXwEAA=="
   },
@@ -68,8 +76,10 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 2333,
     "height": 3500,
     "widths": [
-      900,
-      1600
+      800,
+      1400,
+      2000,
+      2333
     ],
     "lqip": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAABQBQCdASoWACEAPuFeok4opSOiNVv8ARAcCWUA0JAhXyOYq/5N/nsSGMTt4WNeuKOf4wAA/taAbe68fHEDEyLP0FWIXRuOH7/23ib/RsbkOCQjIKcEVqN7CuspzPJo+xT/sRZGqwT5kjPvBQAAAA=="
   },
@@ -80,8 +90,10 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 2333,
     "height": 3500,
     "widths": [
-      900,
-      1600
+      800,
+      1400,
+      2000,
+      2333
     ],
     "lqip": "data:image/webp;base64,UklGRpQAAABXRUJQVlA4IIgAAAAQBgCdASoWACEAPvVsrVCqpiQisBVYAVAeiWMArDNkBIeT62GbSdeu89MX/73XWSbMntkZIOQJLIAA/ssmuNjRyyMQ7NGsBOpxP8v9lRClAmZ17WJ0VcDvJbmqku7EEMHGoXPDH+EtEYmcTC9f1wumPeBBaFiJLwXHt9RhgzyFSrp4BQNFvMAA"
   },
@@ -92,8 +104,10 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 2334,
     "height": 3500,
     "widths": [
-      900,
-      1600
+      800,
+      1400,
+      2000,
+      2334
     ],
     "lqip": "data:image/webp;base64,UklGRpYAAABXRUJQVlA4IIoAAADQBQCdASoWACEAPuVmok4pJiMiNVgMASAciWUAznQWbng0gKpomtZ20KIEhfVAeq1fYfLaQBwAAP7pcsLr0uJWgKCKVzBDTdzH1HA67wirhY8coTidrtr6/Iux0Ho/9K2ImQUsVZ0BHSmr9pSrpAeou0XPitESuwrzFA7p5E3o6plJIe0j/BsAAAA="
   },
@@ -104,7 +118,8 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 1024,
     "height": 1535,
     "widths": [
-      900
+      800,
+      1024
     ],
     "lqip": "data:image/webp;base64,UklGRqAAAABXRUJQVlA4IJQAAABwBQCdASoWACEAPt1aoE4opSMiNUwBEBuJQBcGA+EuUFnvvw4zfClR/xTxQVB3vUMpakNAANsi1eeFKeiLPeSjqDelg/WQRubghGA7uE9JU3EN+2CyTCsa0VQGctXYcOxFABg76tcPvwDFQtEIz94tsFQRE+Ct0917wuWh2sZV7n5/EDJ76FTIQjU7l/KPHrBduAAA"
   },
@@ -115,7 +130,8 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 1024,
     "height": 1535,
     "widths": [
-      900
+      800,
+      1024
     ],
     "lqip": "data:image/webp;base64,UklGRpgAAABXRUJQVlA4IIwAAACQBQCdASoWACEAPvVwr1EqpiQipWzJUB6JZwDJEAZHrSYg52KPgd7ULdhrxN+od81wwNwRAAD+6pKncB/PSG1AjIu07V+hrybcicSlJMhviXa/7DbMvclW9T4pVLn/S5SIKhHK5apMWYWDY0o98tfesZqPu6/CkuTI6W7Lfq+5/pbd+VNgHkM9KwAAAA=="
   },
@@ -126,8 +142,10 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 2333,
     "height": 3500,
     "widths": [
-      900,
-      1600
+      800,
+      1400,
+      2000,
+      2333
     ],
     "lqip": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAAAQBQCdASoWACEAPuVgpk4pJaOiNUgBIByJaQAAeh90sQsWDq4gtGI8xrNIQlCPqfqYAP7w0USl1n6Fj0wBkBFx2Ay9CVydiJ5OYZRl3dM1cVcBQ+baC1k0ohqzgyu8+AAAAA=="
   },
@@ -138,7 +156,8 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 1170,
     "height": 1173,
     "widths": [
-      900
+      800,
+      1170
     ],
     "lqip": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAACwBACdASoWABYAPvV0slMqpqSiqAgBUB6JQBOmYAgpMMjAiY06BIBb7Derfzp4AP67uX28IONuwAUSetpia7c8ypCoY9PhmezyQ39RoMAxEef/bFhVqjjkXzwyVCTSXg+IAAAA"
   },
@@ -182,7 +201,8 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 1254,
     "height": 1254,
     "widths": [
-      900
+      800,
+      1254
     ],
     "lqip": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAABQBQCdASoWABYAPvVsrVGqpaQiqAqpUB6JQBYj5ofqAhHdjURzfG37alDrs00rxvfHYyAA/iGxkOCtYPkaIXBXhNlWnHIekP6BSMslIByMcIJ3mdwxJz5eAv+R4KR2Z82Lqmdb3VgndlvnTZKWkFoFGgA="
   },
@@ -215,7 +235,8 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 1278,
     "height": 1278,
     "widths": [
-      900
+      800,
+      1278
     ],
     "lqip": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAABwBACdASoWABYAPu1mpU4ppiMiMAwBMB2JQBOgBDWQa1aIANf7y0ykOuiCAAD+M8GIa4mWuJOuvGkun8eyCkydtIwv37ioSA47F0RCVqRGzWLmUdxtnxSvjhDmeiAA"
   },
@@ -237,7 +258,8 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 941,
     "height": 1672,
     "widths": [
-      900
+      800,
+      941
     ],
     "lqip": "data:image/webp;base64,UklGRp4AAABXRUJQVlA4IJIAAACwBgCdASoWACcAPvVyrlEqpyQiqrgKAVAeiUAXry2gICBNwL68XIW3KqU5cDRicF7QSdD2lzdxC/I0lV5hAAD+4vWX3wAol0GPNhkHE1+RzwDR2fR+8Hym4h09XvFSgINmmuTWPmenLy5opcSpS19WAw8pBT21k2c5OI2XjyZrD6z0H7ad2F4xq081Ywuw6eQAAA=="
   },
@@ -248,7 +270,7 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 832,
     "height": 1248,
     "widths": [
-      832
+      800
     ],
     "lqip": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAACwBACdASoWACEAPu1iqU4ppaQiNVgIATAdiWcAxnwcuSg2Py51YfdkTuKtEZM4AP7pDD6GWA8Y/bfoqdtuz+b3N5lXzk5g30/7M7iQjmDmmJLeBLlS34cTL+gISzIO33P/8WSp61fTl8cQ+rEAAA=="
   },
@@ -259,7 +281,8 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 1024,
     "height": 1535,
     "widths": [
-      900
+      800,
+      1024
     ],
     "lqip": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAACQBQCdASoWACEAPu1mpE4ppiMiNVgIATAdiWcA0YAN7wuqXrH7GW+ZXfj7IIQkm48MWMUzYAD+tUPAFUSqML2JWzVIrXHL8veydnmz1EH9bXJ+kOSOvLp79+252DZNXJk2O+nA/PXywUBQ9LgAAA=="
   },
@@ -270,7 +293,8 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 1024,
     "height": 1535,
     "widths": [
-      900
+      800,
+      1024
     ],
     "lqip": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAABwBQCdASoWACEAPvFapk4ppKMiNVgMATAeCWcAzygUHhf7jdnuNcTylzeLKDojsp7mnmUAAP5emloVeORTp/qvnaml9pWnh356ITBBuAKeDtwwVcNxHlULwFVDNrBgO5T4ZkAwoooHv4VR0NPTOfjGoQ1JpSgAAAA="
   },
@@ -281,7 +305,7 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 832,
     "height": 1248,
     "widths": [
-      832
+      800
     ],
     "lqip": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAAAQBQCdASoWACEAPvVip06qpSMiMBqqqVAeiWUAygAWDsINutc6YNWIiiQ1tkrCtyYAAP6dgn9XmZsN+dhHV3YXluIHyCwQq0ZdX39svAhx5af5U2KDnNcrjE1Ae5tvoUvuNbKm+Qv1COsa8AAAAA=="
   },
@@ -292,7 +316,7 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 832,
     "height": 1248,
     "widths": [
-      832
+      800
     ],
     "lqip": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAAAwBgCdASoWACEAPu1eqU4ppSQiMBqtUTAdiWcAx2wWYRUL0MjgfbwcBwV/rJTaK65YEBrrm7UcAWAAAP65oV2AqPOQ/bdBJp1/UECErCs81gOfd6On5J7Zom7/pEA1Z6wkU6RQ9vulQffEcK66IAAA"
   },
@@ -303,7 +327,8 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 1080,
     "height": 1080,
     "widths": [
-      900
+      800,
+      1080
     ],
     "lqip": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAACQBACdASoWABYAPuliqE4pJaQiMAwBIB0JQAALfRVzQtGIVasIY4MNuvKgVAAA/upuDp33mCRZqJfDpdYLnrScfBU2NXqbErriwLxVk3Q4abwCReZkbffmgRKeJuPEAAA="
   },
@@ -314,8 +339,10 @@ export const MEDIA: Record<string, MediaAsset> = {
     "width": 2333,
     "height": 3500,
     "widths": [
-      900,
-      1600
+      800,
+      1400,
+      2000,
+      2333
     ],
     "lqip": "data:image/webp;base64,UklGRpIAAABXRUJQVlA4IIYAAABQBQCdASoWACEAPvVmqU6qpaOiNVQIAVAeiUAY5PYACSR3zlQK+uScVJT4v3X7m+Qg9AAAc3FvSo2GtFqnR7tgyw8pO+vRIQoj/ihgQIYy9B7vyGT006wMcNVpRfGoJYwh8/gUbUCStY4JRfy+xad7/dQC81kkg9NCTmilAqZvO3fk72AAAA=="
   }

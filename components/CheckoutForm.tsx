@@ -2,14 +2,17 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import CurrencySwitch from "./CurrencySwitch";
 import Field from "./Field";
 import Plate from "./Plate";
+import Price from "./Price";
 import Reveal from "./Reveal";
+import { useBag, useCurrency } from "./Providers";
 import { BRAND } from "@/lib/brand";
-import { bySlug, formatPrice, SAMPLE_ORDER } from "@/lib/catalog";
+import { formatMoney } from "@/lib/currency";
 
 type Errors = Partial<
-  Record<"email" | "name" | "address" | "city" | "country" | "card", string>
+  Record<"email" | "name" | "address" | "city" | "country", string>
 >;
 
 /**
@@ -21,19 +24,15 @@ type Errors = Partial<
  *
  * PAYMENT: the card fields here are inert markup for layout only —
  * nothing is collected, stored, or transmitted. Wire a hosted payment
- * element (Stripe / Paystack / Flutterwave) in their place before this
+ * element (Paystack / Stripe / Flutterwave) in their place before this
  * page goes anywhere near a real order. See DESIGN.md § Checkout.
  */
 export default function CheckoutForm() {
+  const { resolved, subtotal, count, clear, ready } = useBag();
+  const { currency, region } = useCurrency();
   const [errors, setErrors] = useState<Errors>({});
   const [placed, setPlaced] = useState(false);
 
-  const lines = SAMPLE_ORDER.map((line) => {
-    const product = bySlug(line.slug);
-    return product ? { ...line, product } : null;
-  }).filter((line): line is NonNullable<typeof line> => line !== null);
-
-  const subtotal = lines.reduce((sum, l) => sum + l.product.price * l.qty, 0);
   const duties = Math.round(subtotal * 0.075);
   const total = subtotal + duties;
 
@@ -45,7 +44,8 @@ export default function CheckoutForm() {
     const next: Errors = {};
     const email = String(data.get("email") ?? "").trim();
     if (!email) next.email = "Required.";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next.email = "That address looks incomplete.";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      next.email = "That address looks incomplete.";
 
     if (!String(data.get("name") ?? "").trim()) next.name = "Required.";
     if (!String(data.get("address") ?? "").trim()) next.address = "Required.";
@@ -59,7 +59,10 @@ export default function CheckoutForm() {
       return;
     }
 
-    // TODO(handoff): hand off to the payment provider's hosted element.
+    // TODO(handoff): hand the order and the settlement currency to the
+    // payment provider's hosted element here, then clear the bag only
+    // once the provider confirms.
+    clear();
     setPlaced(true);
   };
 
@@ -77,6 +80,24 @@ export default function CheckoutForm() {
             </p>
             <Link href="/" className="btn btn--ghost">
               Return
+            </Link>
+          </div>
+        </Reveal>
+      </div>
+    );
+  }
+
+  // Nothing to check out. Say so plainly rather than showing an empty form.
+  if (ready && count === 0) {
+    return (
+      <div className="u-page u-page--railed" style={{ paddingBlock: "clamp(8rem, 20vh, 14rem)" }}>
+        <Reveal kind="rise">
+          <div style={{ display: "grid", gap: "var(--space-lg)", justifyItems: "start", maxWidth: "40ch" }}>
+            <span className="eyebrow">Checkout</span>
+            <h1 className="u-display">Your bag is empty.</h1>
+            <p className="u-body-lg">There is nothing to settle yet.</p>
+            <Link href="/core" className="btn btn--ghost">
+              See the collection
             </Link>
           </div>
         </Reveal>
@@ -166,7 +187,7 @@ export default function CheckoutForm() {
           </fieldset>
 
           <button type="submit" className="btn btn--primary btn--large btn--wide">
-            Place order — {formatPrice(total)}
+            Place order — {formatMoney(total, currency)}
             <span className="btn__arrow" aria-hidden="true">
               &#8594;
             </span>
@@ -180,10 +201,13 @@ export default function CheckoutForm() {
 
         {/* ---------------- the order ---------------- */}
         <aside className="summary" aria-label="Your order">
-          <span className="eyebrow">Your bag</span>
+          <div className="bag__head" style={{ paddingBlockEnd: 0, borderBlockEnd: "none" }}>
+            <span className="eyebrow">Your bag</span>
+            <CurrencySwitch />
+          </div>
 
-          {lines.map((line) => (
-            <div className="summary__line" key={line.slug}>
+          {resolved.map((line) => (
+            <div className="summary__line" key={`${line.slug}-${line.size ?? ""}`}>
               <Plate
                 tone={line.product.tone}
                 slug={line.product.shots[0]}
@@ -196,17 +220,18 @@ export default function CheckoutForm() {
                   {line.product.name}
                 </span>
                 <span className="u-caption">
-                  {line.size} · {line.qty}
+                  {line.size ? `${line.size} · ` : ""}
+                  {line.qty}
                 </span>
               </div>
-              <span className="u-caption">{formatPrice(line.product.price * line.qty)}</span>
+              <Price ngn={line.product.price * line.qty} className="u-caption" />
             </div>
           ))}
 
           <div className="summary__totals">
             <div className="summary__row">
               <span>Subtotal</span>
-              <span>{formatPrice(subtotal)}</span>
+              <Price ngn={subtotal} />
             </div>
             <div className="summary__row">
               <span>Delivery</span>
@@ -214,17 +239,23 @@ export default function CheckoutForm() {
             </div>
             <div className="summary__row">
               <span>Duties &amp; taxes</span>
-              <span>{formatPrice(duties)}</span>
+              <Price ngn={duties} />
             </div>
             <div className="summary__row summary__row--total">
               <span>Total</span>
-              <span>{formatPrice(total)}</span>
+              <Price ngn={total} />
             </div>
           </div>
 
           <p className="u-caption">
-            Presented in the bone-white box, gold foil monogram, wax seal.
+            {region === "NG"
+              ? "Orders settle in the currency shown above."
+              : "Orders outside Nigeria settle in US Dollars."}
           </p>
+
+          <Link href="/cart" className="btn btn--quiet" style={{ justifySelf: "start" }}>
+            Edit bag
+          </Link>
         </aside>
       </div>
     </div>

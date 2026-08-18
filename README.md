@@ -42,7 +42,7 @@ Requires Node 18.18+ (Node 24 recommended).
 | Route | |
 |---|---|
 | `/` | The landing cinema — logo, tagline, the campaign film, review ticker |
-| `/core` `/ease` | Ready-to-wear collections |
+| `/core` `/ease` | Made to order collections |
 | `/jewelry` | Macro photography + 360° turntable |
 | `/accessories` | Object studies |
 | `/vip` | The private room |
@@ -119,7 +119,22 @@ the source:
 3. **Form endpoints.** Contact, appointments and checkout validate and confirm on
    the client; wire them to a server action or API route.
 
-The cart is currently `SAMPLE_ORDER` in `lib/catalog.ts`.
+### Bag and currency
+
+The bag lives in `components/Providers.tsx` and persists to
+`localStorage` under `neoyo:bag`. It is client-only by design — the site
+is a static export — so there is no order record anywhere until a payment
+provider is wired in.
+
+Prices are stored in Naira throughout `lib/catalog.ts`; `<Price/>`
+converts for display. In Nigeria the visitor chooses Naira or dollars;
+everywhere else the site is dollars only, because the order settles in
+dollars. The rate is `NGN_PER_USD` in `lib/currency.ts` — **it is
+hard-coded and needs reviewing whenever pricing changes.**
+
+Region comes from the browser's time zone, with the locale as a second
+opinion, because a static export has no request IP to read. If the site
+ever moves to a host with edge functions, read the country header instead.
 
 ---
 

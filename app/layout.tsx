@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import Chrome from "@/components/Chrome";
+import Providers from "@/components/Providers";
 import { BRAND } from "@/lib/brand";
 import "./globals.css";
 
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
     template: `%s — ${BRAND.name}`,
   },
   description:
-    "NEOYO. A house built in Lagos. Ready-to-wear, jewelry and accessories, cut once and corrected for years.",
+    "NEOYO. A house built in Lagos. Made to order, jewelry and accessories, cut once and corrected for years.",
   openGraph: {
     title: `${BRAND.name} — ${BRAND.tagline}`,
     description: BRAND.voice,
@@ -62,8 +63,13 @@ export default function RootLayout({
         <a className="u-skip" href="#main">
           Skip to content
         </a>
-        <Chrome />
-        <main id="main">{children}</main>
+        {/* Bag and currency are read from localStorage on the client, so
+            they wrap the whole tree — the chrome shows a bag count and
+            every page shows a price. */}
+        <Providers>
+          <Chrome />
+          <main id="main">{children}</main>
+        </Providers>
       </body>
     </html>
   );

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import BagLink from "./BagLink";
 import Plate from "./Plate";
 import { NAV } from "@/lib/nav";
 import { BRAND } from "@/lib/brand";
@@ -170,9 +171,7 @@ export default function Menu({ open, onClose, triggerRef }: Props) {
             >
               {BRAND.social}
             </a>
-            <Link className="u-hairline m-underline" href="/checkout" onClick={onClose}>
-              Bag
-            </Link>
+            <BagLink className="u-hairline m-underline" onNavigate={onClose} />
           </div>
         </div>
       </div>

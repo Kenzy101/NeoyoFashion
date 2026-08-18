@@ -6,13 +6,14 @@ export { srcSet, fallbackSrc, isPortrait, videoSrc } from "./media";
 /**
  * The landing cinema.
  *
- * A single-page film. Slides alternate deliberately between ready-to-wear
+ * A single-page film. Slides alternate deliberately between made-to-order
  * and jewelry so the house reads as one world rather than two catalogues —
  * a garment, then the thing worn with it, then the next garment.
  *
- * `focus` is the object-position used when a frame has to be cropped. It
- * matters most on portrait photography shown on a landscape screen: put it
- * where the garment is, not where the centre of the file happens to be.
+ * Portrait photography is shown whole on a landscape screen, letterboxed
+ * over a blurred bed of itself — the cinematic register the house wants,
+ * and the only way the cut of a garment survives. `focus` is the
+ * object-position for the frames that are cropped rather than fitted.
  */
 
 export type SlideKind = "wear" | "jewelry" | "beauty";
@@ -23,7 +24,7 @@ export type Slide = {
   kind: SlideKind;
   /** Shown small, bottom right. Short — this is a film, not a caption. */
   label: string;
-  /** object-position for the cropped case. Defaults to centre. */
+  /** object-position for the crop. Defaults to centre. */
   focus?: string;
   /**
    * Colour treatment. The campaign photography was shot in the house's
@@ -36,7 +37,7 @@ export type Slide = {
 };
 
 export const KIND_LABEL: Record<SlideKind, string> = {
-  wear: "Ready-to-Wear",
+  wear: "Made to Order",
   jewelry: "Jewelry",
   beauty: "Beauty",
 };

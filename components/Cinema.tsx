@@ -14,7 +14,7 @@ import {
 /**
  * The landing cinema.
  *
- * One page, one film. Slides alternate between ready-to-wear and jewelry
+ * One page, one film. Slides alternate between made to order and jewelry
  * and hand over on a long cross-dissolve while both frames are still
  * moving — the motion never stops, it only changes subject, which is what
  * separates a film from a carousel.

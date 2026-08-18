@@ -18,7 +18,10 @@ const ROOT = path.join(__dirname, "..");
 const OUT_DIR = path.join(ROOT, "public", "media");
 const MANIFEST = path.join(ROOT, "lib", "media.generated.ts");
 
-const WIDTHS = [900, 1600, 2400];
+// Frames are shown full-bleed and cropped, so the pixels that survive are a
+// fraction of the file and any softness shows. Four widths, capped at the
+// source's own resolution — `withoutEnlargement` stops us inventing detail.
+const WIDTHS = [800, 1400, 2000, 2600];
 const VIDEO_RE = /\.(mp4|webm|mov|m4v)$/i;
 const IMAGE_RE = /\.(jpe?g|png|webp|avif)$/i;
 
@@ -60,22 +63,37 @@ const slugify = (file) =>
     const image = sharp(abs, { failOn: "none" }).rotate(); // honour EXIF orientation
     const meta = await image.metadata();
 
-    const widths = WIDTHS.filter((w) => w <= meta.width).concat(
-      WIDTHS.every((w) => w > meta.width) ? [meta.width] : []
-    );
+    // Every standard width the source can actually satisfy, plus the
+    // source's own width when it sits meaningfully above the largest of
+    // them — on a dense display that last 15% of linear resolution is the
+    // difference between a photograph and a slightly soft one. Never
+    // upscale: a srcset descriptor that claims pixels it does not have is
+    // a lie the browser will act on.
+    const usable = WIDTHS.filter((w) => w <= meta.width);
+    const largest = usable.length ? usable[usable.length - 1] : 0;
+    const widths = usable.length
+      ? meta.width > largest * 1.1
+        ? [...usable, meta.width]
+        : usable
+      : [meta.width];
     const made = [];
 
     for (const w of widths) {
       for (const [fmt, opts] of [
-        ["avif", { quality: 52, effort: 4 }],
-        ["webp", { quality: 78 }],
+        // 4:4:4 keeps the chroma intact. Under the default 4:2:0 the gold
+        // hardware and the red satin lose their edges at this scale.
+        ["avif", { quality: 62, effort: 5, chromaSubsampling: "4:4:4" }],
+        ["webp", { quality: 86 }],
       ]) {
         const name = `${slug}-${w}.${fmt}`;
         const dest = path.join(OUT_DIR, name);
         if (!fs.existsSync(dest)) {
           await sharp(abs, { failOn: "none" })
             .rotate()
-            .resize(w, null, { withoutEnlargement: true })
+            // Lanczos over the default, then a light unsharp pass. Any
+            // downscale softens, and these are read at full screen.
+            .resize(w, null, { withoutEnlargement: true, kernel: "lanczos3" })
+            .sharpen({ sigma: 0.6, m1: 0.4, m2: 0.6 })
             .toFormat(fmt, opts)
             .toFile(dest);
         }

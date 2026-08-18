@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Plate from "./Plate";
 import Reveal from "./Reveal";
-import { formatPrice, type Product } from "@/lib/catalog";
+import Price from "./Price";
+import type { Product } from "@/lib/catalog";
 
 /**
  * The product tile.
@@ -38,7 +39,7 @@ export default function ProductCard({
           <span className="card__name">{product.name}</span>
         </Link>
         <span className="card__meta card__reveal">{product.note}</span>
-        <span className="card__price">{formatPrice(product.price)}</span>
+        <Price ngn={product.price} className="card__price" />
       </div>
     </Reveal>
   );

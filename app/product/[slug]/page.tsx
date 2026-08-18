@@ -7,9 +7,10 @@ import Plate from "@/components/Plate";
 import ProductCard from "@/components/ProductCard";
 import Reveal from "@/components/Reveal";
 import Rotator360, { type JewelForm } from "@/components/Rotator360";
-import Swatches from "@/components/Swatches";
+import Price from "@/components/Price";
+import ProductPurchase from "@/components/ProductPurchase";
 import { BRAND } from "@/lib/brand";
-import { bySlug, byCollection, COLLECTIONS, formatPrice, PRODUCTS } from "@/lib/catalog";
+import { bySlug, byCollection, COLLECTIONS, PRODUCTS } from "@/lib/catalog";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -98,7 +99,7 @@ export default async function ProductPage({ params }: Params) {
                 {collection.title}
               </Link>
               <h1 className="product__name">{product.name}</h1>
-              <p className="product__price">{formatPrice(product.price)}</p>
+              <Price ngn={product.price} className="product__price" />
             </div>
           </Reveal>
 
@@ -107,25 +108,7 @@ export default async function ProductPage({ params }: Params) {
           </Reveal>
 
           <Reveal kind="rise" index={2}>
-            <div className="product__actions">
-              {product.sizes?.length ? (
-                <Swatches
-                  options={product.sizes}
-                  label={product.collection === "jewelry" ? "Size" : "Fit"}
-                />
-              ) : null}
-
-              <Link href="/checkout" className="btn btn--primary btn--wide">
-                Add to bag
-                <span className="btn__arrow" aria-hidden="true">
-                  &#8594;
-                </span>
-              </Link>
-
-              <Link href="/appointments" className="btn btn--ghost btn--wide">
-                See it in {BRAND.city}
-              </Link>
-            </div>
+            <ProductPurchase product={product} />
           </Reveal>
 
           <Reveal kind="fade" index={3}>

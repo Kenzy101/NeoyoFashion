@@ -17,6 +17,10 @@ const nextConfig: NextConfig = {
   // Emits every route as a directory with an index.html, so a plain static
   // host resolves /core without needing rewrite rules.
   trailingSlash: true,
+  // The floating "N" badge is a development-only overlay and is never
+  // emitted by `next build`. Turned off explicitly so it cannot appear
+  // even when someone runs the dev server against production data.
+  devIndicators: false,
   reactStrictMode: true,
   poweredByHeader: false,
   images: {

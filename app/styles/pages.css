@@ -825,3 +825,187 @@
 .onward__link:focus-visible {
   color: var(--accent-ink);
 }
+
+/* =============================================================
+   BAG — the held order
+   ============================================================= */
+
+.bag {
+  display: grid;
+  gap: var(--space-2xl);
+}
+
+@media (min-width: 62rem) {
+  .bag {
+    grid-template-columns: minmax(0, 1.2fr) minmax(20rem, 0.8fr);
+    gap: var(--space-3xl);
+    align-items: start;
+  }
+}
+
+.bag__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-md);
+  padding-block-end: var(--space-lg);
+  border-block-end: var(--border-hair) solid var(--line-soft);
+}
+
+.bag__list {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.bag__line {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr auto;
+  gap: var(--space-md);
+  align-items: start;
+  padding-block-end: var(--space-lg);
+  border-block-end: var(--border-hair) solid var(--line-soft);
+}
+
+.bag__frame {
+  display: block;
+  inline-size: 100%;
+  overflow: hidden;
+}
+
+.bag__body {
+  display: grid;
+  gap: var(--space-3xs);
+  align-content: start;
+}
+
+.bag__price {
+  font-size: var(--text-caption);
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+
+/* Quantity — two hairline steppers, never a spinner */
+.bag__qty {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  margin-block-start: var(--space-2xs);
+}
+
+.bag__step {
+  display: grid;
+  place-items: center;
+  /* 44px target, per WCAG 2.5.8 */
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  font-size: var(--text-body);
+  line-height: 1;
+  color: var(--ink-muted);
+  border: var(--border-hair) solid var(--line);
+  border-radius: var(--radius-soft);
+  transition: border-color var(--dur-quick) var(--ease-glide),
+    color var(--dur-quick) var(--ease-glide);
+}
+
+.bag__step:hover:not([disabled]),
+.bag__step:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.bag__step[disabled] {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.bag__count {
+  min-inline-size: 2ch;
+  text-align: center;
+  font-size: var(--text-body);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.bag__remove {
+  margin-inline-start: var(--space-sm);
+  font-size: var(--text-hairline);
+  letter-spacing: var(--track-hairline);
+  text-transform: uppercase;
+  min-height: 2.75rem;
+}
+
+/* The count beside "Bag" in the menu */
+.bag__badge {
+  display: inline-grid;
+  place-items: center;
+  min-inline-size: 1.35rem;
+  block-size: 1.35rem;
+  padding-inline: 0.35rem;
+  font-size: var(--text-hairline);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  color: var(--neoyo-espresso);
+  background: var(--neoyo-gold-light);
+  border-radius: var(--radius-pill);
+  vertical-align: middle;
+}
+
+@media (max-width: 34rem) {
+  .bag__line {
+    grid-template-columns: 4.5rem 1fr;
+  }
+  .bag__price {
+    grid-column: 2;
+  }
+}
+
+/* =============================================================
+   CURRENCY SWITCH — only where there is a choice
+   ============================================================= */
+
+.ccy {
+  display: inline-flex;
+  border: var(--border-hair) solid var(--line);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.ccy__opt {
+  padding: 0.6rem var(--space-sm);
+  min-height: 2.75rem;
+  font-size: var(--text-hairline);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--track-hairline);
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  transition: color var(--dur-quick) var(--ease-glide),
+    background var(--dur-quick) var(--ease-glide);
+}
+
+.ccy__opt:hover {
+  color: var(--ink);
+}
+
+.ccy__opt[aria-checked="true"] {
+  color: var(--ink-inverse);
+  background: var(--surface-inverse);
+}
+
+/* A price holds still until the region is known, rather than swapping
+   currency in front of the visitor. */
+[data-price-ready="false"] {
+  opacity: 0.35;
+}
+
+[data-price-ready] {
+  transition: opacity var(--dur-calm) var(--ease-glide);
+}
+
+/* The footer's currency switch sits under the contact line, left-aligned
+   with it rather than stretching across the column. */
+.foot__ccy {
+  justify-self: start;
+  margin-block-start: var(--space-2xs);
+}

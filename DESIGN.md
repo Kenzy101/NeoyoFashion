@@ -282,7 +282,7 @@ GitHub Pages, where the site is served from a sub-directory.
 
 The homepage is a single-page film. `components/Cinema.tsx` plays the real
 campaign photography full-bleed; slides alternate deliberately between
-ready-to-wear and jewelry so the house reads as one world rather than two
+made to order and jewelry so the house reads as one world rather than two
 catalogues.
 
 ### How it behaves
@@ -371,6 +371,43 @@ Two things are easy to get wrong:
 
 `out/.nojekyll` is required — without it GitHub's Jekyll pass strips `_next`
 and the site loads unstyled.
+
+---
+
+## 6c. Bag, currency and orders
+
+**The bag.** `components/Providers.tsx` holds it: an array of
+`{slug, size, qty}`, persisted to `localStorage` under `neoyo:bag`.
+Two lines are the same line only when both piece *and* size match, so one
+dress in two sizes is two rows. Quantity is capped at nine — past that it
+is a wholesale enquiry, not a bag.
+
+The stored bag is read once on mount, and nothing is written back until
+that read completes; writing earlier would wipe a returning visitor's bag
+on first paint. The server always renders an empty bag, so there is no
+hydration mismatch.
+
+**Currency.** Every price in the catalogue is stored in Naira — the house
+prices in Naira, so that is the single source of truth. `<Price ngn={…}/>`
+converts at render.
+
+| Region | Sees |
+|---|---|
+| Nigeria | Naira and US Dollars, switchable |
+| Everywhere else | US Dollars only |
+
+There is no switch outside Nigeria because the order settles in dollars —
+a control that cannot change the outcome is worse than no control.
+
+`NGN_PER_USD` in `lib/currency.ts` is **hard-coded and dated**. A static
+export cannot call a rates API at build time without going stale anyway,
+and a wrong rate on a luxury price list is worse than one somebody owns.
+Update it when pricing changes.
+
+Region detection reads the browser time zone (`Africa/Lagos`) with the
+locale as a second opinion. It is a good default, not a legal-grade
+determination — a static site has no request IP. On a host with edge
+functions, read the country header and pass it in instead.
 
 ---
 

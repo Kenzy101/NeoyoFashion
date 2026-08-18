@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BRAND } from "@/lib/brand";
 import { FOOTER_NAV } from "@/lib/nav";
+import CurrencySwitch from "./CurrencySwitch";
 
 export default function Footer() {
   return (
@@ -15,6 +16,8 @@ export default function Footer() {
             <a className="u-label m-underline" href={`mailto:${BRAND.email}`}>
               {BRAND.email}
             </a>
+            {/* Renders only in Nigeria, where there is a choice to make. */}
+            <CurrencySwitch className="foot__ccy" />
           </div>
 
           {FOOTER_NAV.map((group) => (
