@@ -24,7 +24,20 @@ export type PlateMotion = "still" | "kenburns" | "kenburns-alt" | "silk";
 export type PlateProps = {
   tone: PlateTone;
   motion?: PlateMotion;
-  /** Drop-in point for real photography. */
+  /**
+   * A key into the ingested media manifest. Preferred over `src`: it
+   * renders responsive AVIF + WebP with the correct intrinsic size, so
+   * nothing reflows as the photograph arrives. Produced by
+   * scripts/ingest-media.cjs.
+   */
+  slug?: string;
+  /**
+   * Colour treatment, matching the landing cinema. `studio` pulls
+   * supplier stills back toward the earth family; campaign photography
+   * needs nothing.
+   */
+  grade?: "campaign" | "studio";
+  /** Escape hatch for a one-off file outside the manifest. */
   src?: string;
   /** Drop-in point for product/fabric video. Muted, looping, inline. */
   video?: string;

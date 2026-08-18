@@ -19,6 +19,13 @@ export const metadata: Metadata = {
  * macro photography and a 360° turntable are the whole argument here,
  * so the page opens with both before it shows a single price.
  */
+/** The macro opening — three closeups at different distances. */
+const MACRO = [
+  { slug: "img-5660", tone: "gold" as const, alt: "The Crimson Drop, on crimson" },
+  { slug: "img-5610", tone: "stone" as const, alt: "Citrine and moonstone on satin" },
+  { slug: "img-5596", tone: "espresso" as const, alt: "Carved quartz blossom on driftwood" },
+];
+
 export default function Jewelry() {
   const collection = COLLECTIONS.jewelry;
   const products = byCollection("jewelry");
@@ -40,13 +47,15 @@ export default function Jewelry() {
             gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 16rem), 1fr))",
           }}
         >
-          {(["gold", "espresso", "skin"] as const).map((tone, i) => (
-            <Reveal key={tone} kind="develop" index={i}>
+          {MACRO.map((shot, i) => (
+            <Reveal key={shot.slug} kind="develop" index={i}>
               <div data-cursor-view="Closer">
                 <Plate
-                  tone={tone}
+                  tone={shot.tone}
+                  slug={shot.slug}
+                  grade="studio"
+                  alt={shot.alt}
                   ratio={i === 1 ? "3 / 4" : "1 / 1"}
-                  motion={i === 0 ? "kenburns" : "still"}
                   light="none"
                 />
               </div>
@@ -55,7 +64,7 @@ export default function Jewelry() {
         </div>
         <Reveal kind="fade">
           <p className="u-caption" style={{ marginTop: "var(--space-sm)" }}>
-            Macro, single hard key. Brass at 1:1.
+            Macro, single hard key. Stone at 1:1.
           </p>
         </Reveal>
       </section>
@@ -71,16 +80,16 @@ export default function Jewelry() {
           }}
         >
           <Reveal kind="fade">
-            <Rotator360 form="ring" label="The Seal Ring" />
+            <Rotator360 form="earring" label="The Crimson Drop" />
           </Reveal>
 
           <Reveal kind="rise" index={1}>
             <div style={{ display: "grid", gap: "var(--space-md)" }}>
               <p className="eyebrow">Turn it</p>
-              <h2 className="u-display">The Seal Ring</h2>
+              <h2 className="u-display">The Crimson Drop</h2>
               <p className="u-body-lg">
-                Lost-wax cast in {BRAND.city}, then polished for two hours until the
-                light stops catching and starts moving.
+                Red agate, set by hand in {BRAND.city} against four white stones,
+                then polished until the light stops catching and starts moving.
               </p>
               <p className="u-caption">
                 Drag, swipe, or use the arrow keys. Ten degrees a step.

@@ -26,10 +26,13 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 /** Which procedural form the 360° viewer should draw per jewelry piece. */
 const FORM: Record<string, JewelForm> = {
-  "the-seal-ring": "ring",
-  "the-bronze-cuff": "cuff",
-  "the-hairline-chain": "chain",
-  "the-monolith-earring": "earring",
+  "the-crimson-drop": "earring",
+  "the-snow-quartz-bracelet": "cuff",
+  "the-citrine-double-strand": "chain",
+  "the-rutilated-mixed": "cuff",
+  "the-strawberry-quartz": "cuff",
+  "the-citrine-moonstone": "cuff",
+  "the-amethyst-blossom": "cuff",
 };
 
 export default async function ProductPage({ params }: Params) {
@@ -47,23 +50,38 @@ export default async function ProductPage({ params }: Params) {
       <article className="u-page u-page--railed product">
         {/* --- Gallery. Massive photography, almost no text. --- */}
         <div className="product__gallery">
+          {/* The hero: the photograph itself where one exists, and the
+              procedural plate where the piece is still awaiting a shoot. */}
+          <Reveal kind="develop">
+            <div data-cursor-view="Closer">
+              <Plate
+                tone={product.tone}
+                slug={product.shots[0]}
+                grade={product.grade}
+                alt={product.name}
+                ratio="4 / 5"
+                motion={product.shots.length ? "still" : "kenburns"}
+                light={product.collection === "jewelry" ? "none" : "key"}
+              />
+            </div>
+          </Reveal>
+
+          {/* Jewelry turns in the hand. The viewer sits under the hero so a
+              visitor sees the real piece first and the turntable second. */}
           {product.rotate ? (
             <Reveal kind="fade">
               <Rotator360 form={FORM[product.slug] ?? "ring"} label={product.name} />
             </Reveal>
-          ) : (
-            <Reveal kind="develop">
-              <div data-cursor-view="Closer">
-                <Plate tone={product.tone} ratio="4 / 5" motion="kenburns" />
-              </div>
-            </Reveal>
-          )}
+          ) : null}
 
-          {product.gallery.slice(1).map((tone, i) => (
-            <Reveal key={`${tone}-${i}`} kind="develop" index={i}>
+          {product.shots.slice(1).map((shot, i) => (
+            <Reveal key={shot} kind="develop" index={i}>
               <div data-cursor-view="Closer">
                 <Plate
-                  tone={tone}
+                  tone={product.tone}
+                  slug={shot}
+                  grade={product.grade}
+                  alt={`${product.name}, view ${i + 2}`}
                   ratio={i % 2 === 0 ? "3 / 4" : "1 / 1"}
                   light={product.collection === "jewelry" ? "none" : "key"}
                 />

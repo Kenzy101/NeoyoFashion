@@ -43,7 +43,13 @@ export default function CollectionPage({
           horizontal scrollbar. The Ken Burns push inside supplies the move. */}
       <Reveal kind="fade">
         <div className="bleed" data-cursor-view="Look">
-          <Plate tone={collection.tone} motion="kenburns" fill />
+          <Plate
+            tone={collection.tone}
+            slug={collection.hero}
+            alt={`${collection.title} campaign`}
+            motion={collection.hero ? "still" : "kenburns"}
+            fill
+          />
           <div className="bleed__quote">
             <p className="u-voice">{BRAND.voice}</p>
           </div>

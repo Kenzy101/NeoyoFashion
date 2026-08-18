@@ -1,4 +1,7 @@
-import { MEDIA, type MediaAsset } from "./media.generated";
+import { MEDIA } from "./media.generated";
+import type { MediaAsset } from "./media";
+
+export { srcSet, fallbackSrc, isPortrait, videoSrc } from "./media";
 
 /**
  * The landing cinema.
@@ -81,19 +84,3 @@ export const RESOLVED: ResolvedSlide[] = SLIDES.map((slide) => {
   const asset = MEDIA[slide.slug];
   return asset ? { ...slide, asset } : null;
 }).filter((s): s is ResolvedSlide => s !== null);
-
-/** srcset across the widths the ingest script actually produced. */
-export const srcSet = (asset: MediaAsset, format: "avif" | "webp"): string =>
-  (asset.widths ?? [])
-    .map((w) => `/media/${asset.slug}-${w}.${format} ${w}w`)
-    .join(", ");
-
-/** The widest derivative — used as the <img> fallback src. */
-export const fallbackSrc = (asset: MediaAsset): string => {
-  const widths = asset.widths ?? [];
-  const widest = widths.length ? widths[widths.length - 1] : 900;
-  return `/media/${asset.slug}-${widest}.webp`;
-};
-
-export const isPortrait = (asset: MediaAsset): boolean =>
-  Boolean(asset.width && asset.height && asset.width / asset.height < 0.95);

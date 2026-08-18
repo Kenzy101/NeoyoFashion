@@ -26,7 +26,12 @@ export default function Appointments() {
           <Reveal kind="develop">
             <div style={{ display: "grid", gap: "var(--space-md)" }}>
               <div data-cursor-view="Look">
-                <Plate tone="espresso" ratio="4 / 5" motion="kenburns" />
+                <Plate
+                  tone="espresso"
+                  slug="img-5734"
+                  alt="The private room, Lagos"
+                  ratio="4 / 5"
+                />
               </div>
               <p className="u-caption">
                 The private room, {BRAND.city}. West-facing, one window.

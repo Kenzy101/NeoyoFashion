@@ -25,8 +25,11 @@ export default function ProductCard({
       <div className="card__frame" data-cursor-view="View">
         <Plate
           tone={product.tone}
+          slug={product.shots[0]}
+          grade={product.grade}
+          alt={product.name}
           ratio={ratio}
-          motion={index % 3 === 0 ? "kenburns" : "still"}
+          motion={index % 3 === 0 && !product.shots.length ? "kenburns" : "still"}
         />
       </div>
 

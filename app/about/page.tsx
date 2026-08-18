@@ -30,6 +30,14 @@ const PRINCIPLES = [
   },
 ];
 
+/** One frame per principle, in the order the principles are written. */
+const PRINCIPLE_SHOTS = [
+  { slug: "img-5714", tone: "bone" as const, alt: "The Rosette Lattice on the stand" },
+  { slug: "img-5610", tone: "gold" as const, alt: "Citrine and moonstone", grade: "studio" as const },
+  { slug: "1767551647754", tone: "stone" as const, alt: "Cut and finished in Lagos" },
+  { slug: "img-5389", tone: "espresso" as const, alt: "Black, in afternoon light" },
+];
+
 export default function About() {
   return (
     <>
@@ -42,7 +50,12 @@ export default function About() {
       {/* Full-bleed wrappers reveal with `fade`, never a scaling entrance. */}
       <Reveal kind="fade">
         <div className="bleed" data-cursor-view="Look">
-          <Plate tone="architecture" motion="kenburns" fill />
+          <Plate
+            tone="skin"
+            slug="1767531220127"
+            alt="NEOYO, photographed in Lagos"
+            fill
+          />
           <div className="bleed__quote">
             <p className="u-voice">{BRAND.voice}</p>
           </div>
@@ -79,7 +92,10 @@ export default function About() {
               <div className={`spread ${i % 2 === 1 ? "spread--flip" : ""}`}>
                 <div className="spread__media m-push" data-cursor-view="Look">
                   <Plate
-                    tone={(["bone", "gold", "stone", "espresso"] as const)[i]}
+                    tone={PRINCIPLE_SHOTS[i].tone}
+                    slug={PRINCIPLE_SHOTS[i].slug}
+                    grade={PRINCIPLE_SHOTS[i].grade}
+                    alt={PRINCIPLE_SHOTS[i].alt}
                     ratio="5 / 4"
                   />
                 </div>
@@ -99,7 +115,12 @@ export default function About() {
         <Reveal kind="rise">
           <div className="spread">
             <div className="spread__media" data-cursor-view="Look">
-              <Plate tone="skin" ratio="4 / 5" motion="kenburns-alt" />
+              <Plate
+                tone="skin"
+                slug="1767531220079"
+                alt="The atelier, four in the afternoon"
+                ratio="4 / 5"
+              />
             </div>
             <div className="spread__text">
               <span className="u-hairline">{BRAND.founderTitle}</span>

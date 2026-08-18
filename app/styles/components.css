@@ -791,3 +791,22 @@
     gap: var(--space-3xs);
   }
 }
+
+/* A <picture> inside a plate must fill it — the element is inline by
+   default and would otherwise collapse, leaving object-fit inert. */
+.plate picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+  z-index: 1;
+}
+
+/* The same colourist's pass the landing cinema uses, so a bracelet still
+   looks the same on a product page as it does in the film. */
+.plate[data-grade="studio"] .plate__media {
+  filter: saturate(0.7) sepia(0.2) contrast(1.05) brightness(0.94);
+}
+
+.plate[data-grade="campaign"] .plate__media {
+  filter: saturate(0.96) contrast(1.02);
+}

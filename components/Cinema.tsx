@@ -7,6 +7,7 @@ import {
   fallbackSrc,
   isPortrait,
   srcSet,
+  videoSrc,
   type ResolvedSlide,
 } from "@/lib/cinema";
 
@@ -126,7 +127,7 @@ export default function Cinema({ slides = RESOLVED }: { slides?: ResolvedSlide[]
               {asset.kind === "video" ? (
                 <video
                   className="cine__media"
-                  src={asset.src}
+                  src={videoSrc(asset)}
                   poster={asset.lqip}
                   autoPlay
                   muted

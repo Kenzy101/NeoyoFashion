@@ -184,7 +184,13 @@ export default function CheckoutForm() {
 
           {lines.map((line) => (
             <div className="summary__line" key={line.slug}>
-              <Plate tone={line.product.tone} ratio="4 / 5" />
+              <Plate
+                tone={line.product.tone}
+                slug={line.product.shots[0]}
+                grade={line.product.grade}
+                alt={line.product.name}
+                ratio="4 / 5"
+              />
               <div style={{ display: "grid", gap: "var(--space-3xs)" }}>
                 <span className="card__name" style={{ fontSize: "var(--text-body)" }}>
                   {line.product.name}

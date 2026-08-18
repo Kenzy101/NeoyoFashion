@@ -18,21 +18,25 @@ const OFFERINGS = [
     title: "The Private Room",
     body: "Two hours, the collection pulled in your size before you arrive, and no one else in the building.",
     tone: "espresso" as const,
+    shot: "img-5708",
   },
   {
     title: "Made to Measure",
     body: "Four fittings across six weeks. Your pattern is kept, and every piece after the first is cut from it.",
     tone: "stone" as const,
+    shot: "img-5713",
   },
   {
     title: "The House Call",
     body: "We travel. Lagos, Abuja, London, Accra, New York. The rail arrives; the room becomes the atelier.",
     tone: "architecture" as const,
+    shot: "kal03419",
   },
   {
     title: "Archive Access",
     body: "Pieces held back from release, offered first to clients who have been with the house longest.",
     tone: "gold" as const,
+    shot: "img-5667",
   },
 ];
 
@@ -48,7 +52,12 @@ export default function VIP() {
       {/* Full-bleed wrappers reveal with `fade`, never a scaling entrance. */}
       <Reveal kind="fade">
         <div className="bleed" data-cursor-view="Enter">
-          <Plate tone="espresso" motion="kenburns" fill />
+          <Plate
+            tone="espresso"
+            slug="img-5389"
+            alt="The private room, Lagos"
+            fill
+          />
           <div className="bleed__quote">
             <p className="u-voice">One client. One afternoon. One rail.</p>
           </div>
@@ -61,7 +70,12 @@ export default function VIP() {
             <Reveal key={offering.title} kind="rise">
               <div className={`spread ${i % 2 === 1 ? "spread--flip" : ""}`}>
                 <div className="spread__media m-push" data-cursor-view="Look">
-                  <Plate tone={offering.tone} ratio="5 / 4" />
+                  <Plate
+                    tone={offering.tone}
+                    slug={offering.shot}
+                    alt={offering.title}
+                    ratio="5 / 4"
+                  />
                 </div>
                 <div className="spread__text">
                   <span className="u-hairline">

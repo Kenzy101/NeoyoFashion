@@ -17,35 +17,60 @@ const CAMPAIGNS: {
   title: string;
   line: string;
   tone: PlateTone;
-  frames: PlateTone[];
+  /** Manifest key for the full-bleed opening frame. */
+  hero: string;
+  /** Three supporting frames, shown at different distances. */
+  frames: { slug: string; tone: PlateTone; alt: string }[];
+  grade?: "campaign" | "studio";
 }[] = [
   {
     season: "SS 26",
     title: "Attention Follows Her",
     line: "She doesn't seek attention. Attention follows her.",
     tone: "skin",
-    frames: ["skin", "bone", "gold"],
+    hero: "kal03419",
+    frames: [
+      { slug: "1767531220079", tone: "skin", alt: "Pearl, close" },
+      { slug: "1767615547311", tone: "bone", alt: "Bouclé, off the shoulder" },
+      { slug: "1767531220533", tone: "gold", alt: "Stacked at the wrist" },
+    ],
   },
   {
     season: "AW 25",
-    title: "The Monolith",
+    title: "On The Stand",
     line: "One seam. One shoulder. One decision.",
     tone: "architecture",
-    frames: ["architecture", "stone", "espresso"],
+    hero: "img-5714",
+    frames: [
+      { slug: "img-5713", tone: "bone", alt: "The Tulle Drop Dress on the stand" },
+      { slug: "img-5708", tone: "skin", alt: "The Ruffle Gown on the stand" },
+      { slug: "img-5733", tone: "stone", alt: "The Turquoise Column on the stand" },
+    ],
   },
   {
     season: "SS 25",
     title: "Four O'Clock",
     line: "The colour of the studio wall at four o'clock.",
     tone: "bone",
-    frames: ["bone", "skin", "stone"],
+    hero: "1767551647754",
+    frames: [
+      { slug: "1767372347865-2", tone: "bone", alt: "Full length, white room" },
+      { slug: "img-5387", tone: "skin", alt: "The Bouclé Off-Shoulder" },
+      { slug: "img-5389", tone: "espresso", alt: "Black, in afternoon light" },
+    ],
   },
   {
     season: "AW 24",
     title: "Cast In Lagos",
-    line: "Brass, worked until the light behaves.",
+    line: "Stone, worked until the light behaves.",
     tone: "gold",
-    frames: ["gold", "espresso", "gold"],
+    hero: "img-5667",
+    grade: "studio",
+    frames: [
+      { slug: "img-5587", tone: "espresso", alt: "Rutilated, mixed" },
+      { slug: "img-5573", tone: "gold", alt: "The Citrine Double Strand" },
+      { slug: "img-5658", tone: "skin", alt: "The Strawberry Quartz" },
+    ],
   },
 ];
 
@@ -67,7 +92,9 @@ export default function Campaigns() {
               <div className="bleed" data-cursor-view="Look">
                 <Plate
                   tone={campaign.tone}
-                  motion={index % 2 === 0 ? "kenburns" : "kenburns-alt"}
+                  slug={campaign.hero}
+                  grade={campaign.grade}
+                  alt={`${campaign.title}, ${campaign.season}`}
                   fill
                 />
                 <div className="bleed__quote">
@@ -101,10 +128,16 @@ export default function Campaigns() {
                   gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 14rem), 1fr))",
                 }}
               >
-                {campaign.frames.map((tone, i) => (
-                  <Reveal key={`${campaign.season}-${i}`} kind="develop" index={i}>
+                {campaign.frames.map((frame, i) => (
+                  <Reveal key={frame.slug} kind="develop" index={i}>
                     <div className="m-push" data-cursor-view="Closer">
-                      <Plate tone={tone} ratio={i === 1 ? "4 / 5" : "1 / 1"} />
+                      <Plate
+                        tone={frame.tone}
+                        slug={frame.slug}
+                        grade={campaign.grade}
+                        alt={frame.alt}
+                        ratio={i === 1 ? "4 / 5" : "1 / 1"}
+                      />
                     </div>
                   </Reveal>
                 ))}
