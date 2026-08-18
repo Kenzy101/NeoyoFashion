@@ -599,79 +599,242 @@
 }
 
 /* =============================================================
-   SLIDESHOW — the landing film.
-   Full-bleed. 5s dwell, 1.8s crossfade, slow Ken Burns push.
-   Only two layers are ever composited at once.
+   CINEMA — the landing film.
+
+   Slides hand over on a long cross-dissolve while both frames are
+   still drifting, so the motion never stops; it only changes
+   subject. That continuity is the whole difference between a film
+   and a carousel.
    ============================================================= */
 
-.film {
+.cine {
   position: relative;
   inline-size: 100%;
-  /* svh keeps mobile browser chrome from cropping the frame */
+  /* svh so mobile browser chrome cannot crop the frame */
   block-size: 100svh;
   overflow: hidden;
   background: var(--neoyo-espresso-veil);
+  isolation: isolate;
 }
 
-.film__slide {
+.cine__slide {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: opacity var(--slide-fade) var(--ease-cinema);
+  /* The dissolve is deliberately longer than half the dwell, so there is
+     always a moment where both frames are present. */
+  transition: opacity 1900ms var(--ease-cinema);
   will-change: opacity;
 }
 
-.film__slide[data-active="true"] {
+.cine__slide[data-active="true"] {
   opacity: 1;
 }
 
-/* A soft vignette so type stays legible over any frame */
-.film__vignette {
+/* --- The bed ------------------------------------------------------
+   A blurred, darkened copy of the frame, sitting behind it. Only ever
+   seen where a portrait photograph is letterboxed on a wide screen.
+   Static: it carries a heavy blur and must not be animated. */
+.cine__bed {
+  position: absolute;
+  inset: -6%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(46px) saturate(1.15) brightness(0.42);
+  transform: scale(1.12);
+}
+
+/* --- The moving frame --------------------------------------------- */
+.cine__frame {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+  animation: cine-push 22s cubic-bezier(0.33, 0, 0.24, 1) both;
+}
+
+.cine__slide[data-drift="pull"] .cine__frame {
+  animation-name: cine-pull;
+}
+
+/* <picture> is an inline wrapper with no box of its own. Without this it
+   never fills the frame, `block-size: 100%` on the image resolves against
+   nothing, and object-fit silently does nothing — the photograph renders
+   at full intrinsic height and overflows instead of fitting. */
+.cine__frame picture {
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+
+.cine__media {
+  inline-size: 100%;
+  block-size: 100%;
+  /* Square and landscape frames fill the screen. */
+  object-fit: cover;
+}
+
+/* The colourist's pass. Studio stills arrive with bright white sweeps and
+   saturated purples and teals that sit outside the house palette; pulling
+   saturation down and warmth up lands them in the same room as the
+   campaign photography. The filter is static — never animated — so it
+   costs one rasterisation, not one per frame. */
+.cine__slide[data-grade="studio"] .cine__media {
+  filter: saturate(0.7) sepia(0.2) contrast(1.05) brightness(0.94);
+}
+
+/* The campaign frames were shot in the house's own light and only need
+   the faintest unifying touch. */
+.cine__slide[data-grade="campaign"] .cine__media {
+  filter: saturate(0.96) contrast(1.02);
+}
+
+/* Portrait photography on a landscape screen is shown whole. On a fashion
+   site the cut of the garment is the subject — cropping a dress in half to
+   fill the frame defeats the point. The bed fills the margins. */
+@media (orientation: landscape) {
+  .cine__slide[data-orient="portrait"] .cine__media {
+    object-fit: contain;
+  }
+
+  /* A letterboxed frame is letterboxed precisely so the whole garment is
+     visible — hem, shoulder and all. The full 13% push would crop back
+     into it and undo that, so contained frames drift on a much gentler
+     curve: enough that the image is alive, not enough to lose the cut. */
+  .cine__slide[data-orient="portrait"] .cine__frame {
+    animation-name: cine-push-soft;
+  }
+
+  .cine__slide[data-orient="portrait"][data-drift="pull"] .cine__frame {
+    animation-name: cine-pull-soft;
+  }
+}
+
+@keyframes cine-push-soft {
+  from {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.035) translate3d(-0.5%, -0.4%, 0);
+  }
+}
+
+@keyframes cine-pull-soft {
+  from {
+    transform: scale(1.035) translate3d(0.4%, 0.35%, 0);
+  }
+  to {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+}
+
+@keyframes cine-push {
+  from {
+    transform: scale(1.005) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.13) translate3d(-1.4%, -1%, 0);
+  }
+}
+
+@keyframes cine-pull {
+  from {
+    transform: scale(1.13) translate3d(1.2%, 0.8%, 0);
+  }
+  to {
+    transform: scale(1.005) translate3d(0, 0, 0);
+  }
+}
+
+/* --- Grade --------------------------------------------------------
+   A vignette and a film grain over everything, so photography shot in
+   different rooms on different days still reads as one campaign. */
+.cine__vignette {
   position: absolute;
   inset: 0;
   z-index: 5;
   pointer-events: none;
   background: radial-gradient(
-      120% 100% at 50% 40%,
-      transparent 30%,
-      rgba(28, 17, 11, 0.34) 100%
+      124% 100% at 50% 42%,
+      transparent 32%,
+      rgba(28, 17, 11, 0.42) 100%
     ),
-    linear-gradient(to bottom, rgba(28, 17, 11, 0.42) 0%, transparent 26%, transparent 58%, rgba(28, 17, 11, 0.6) 100%);
+    linear-gradient(
+      to bottom,
+      rgba(28, 17, 11, 0.46) 0%,
+      transparent 24%,
+      /* The tagline and ticker live in the bottom third. A white studio
+         sweep behind cream type is unreadable without this. */
+      transparent 46%,
+      rgba(28, 17, 11, 0.34) 66%,
+      rgba(28, 17, 11, 0.66) 84%,
+      rgba(28, 17, 11, 0.82) 100%
+    );
 }
 
-/* --- Slide counter and category, bottom right ------------------- */
-.film__meta {
+.cine__grain {
   position: absolute;
+  inset: -50%;
   z-index: 6;
-  inset-block-end: calc(var(--chrome-inset) + 4.5rem);
+  pointer-events: none;
+  opacity: 0.22;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+/* --- Subject, counter, controls ----------------------------------- */
+.cine__meta {
+  position: absolute;
+  z-index: 7;
+  inset-block-end: calc(var(--chrome-inset) + 4.25rem);
   inset-inline-end: var(--chrome-inset);
   display: flex;
   align-items: center;
   gap: var(--space-sm);
   color: var(--neoyo-bone-white);
-  /* The film's subject changes under this label, so contrast cannot be
-     guaranteed by the ground alone — the shadow carries it. */
   text-shadow: 0 1px 14px rgba(28, 17, 11, 0.85);
-  text-align: right;
 }
 
-.film__progress {
-  inline-size: clamp(2.5rem, 8vw, 5rem);
+.cine__subject {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-size: var(--text-hairline);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--track-hairline);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cine__kind {
+  color: var(--neoyo-gold-light);
+}
+
+.cine__dash {
+  opacity: 0.6;
+}
+
+.cine__bar {
+  inline-size: clamp(2rem, 6vw, 4.5rem);
   block-size: 1px;
-  background: color-mix(in srgb, var(--neoyo-bone-white) 26%, transparent);
-  overflow: hidden;
   flex: none;
+  background: color-mix(in srgb, var(--neoyo-bone-white) 30%, transparent);
+  overflow: hidden;
 }
 
-.film__progress span {
+.cine__bar > span {
   display: block;
   block-size: 100%;
   background: var(--neoyo-gold-light);
   transform-origin: left center;
-  animation: m-slide-progress var(--slide-hold) linear infinite;
+  transform: scaleX(1);
 }
 
-@keyframes m-slide-progress {
+/* The bar fills across the dwell — the only clock on the page. */
+.cine__bar > span[data-running="true"] {
+  animation: cine-progress var(--slide-hold) linear both;
+}
+
+@keyframes cine-progress {
   from {
     transform: scaleX(0);
   }
@@ -680,15 +843,94 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .film__progress span {
-    animation: none;
-    transform: scaleX(1);
-  }
+.cine__count {
+  font-size: var(--text-hairline);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--track-hairline);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* WCAG 2.2.2 — auto-advancing content needs a stop. Kept to hairline
+   glyphs so it reads as part of the frame, not as a control panel. */
+.cine__controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-inline-start: var(--space-2xs);
+}
+
+.cine__btn {
+  display: grid;
+  place-items: center;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  padding: 0;
+  font-size: var(--text-caption);
+  line-height: 1;
+  color: color-mix(in srgb, var(--neoyo-bone-white) 82%, transparent);
+  border-radius: var(--radius-pill);
+  transition: color var(--dur-quick) var(--ease-glide),
+    background var(--dur-quick) var(--ease-glide);
+}
+
+.cine__btn:hover,
+.cine__btn:focus-visible {
+  color: var(--neoyo-bone-white);
+  background: rgba(28, 17, 11, 0.55);
 }
 
 @media (max-width: 47.9375rem) {
-  .film__meta {
-    inset-block-end: calc(var(--chrome-inset) + 5.5rem);
+  /* Portrait screens stack three things in the bottom band: the ticker on
+     the edge, the film's caption above it, the tagline above that. They
+     are laid out from the bottom up so none of them can land on another. */
+  .cine__meta {
+    inset-inline: var(--gutter);
+    inset-block-end: calc(var(--chrome-inset) + 3.75rem);
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: var(--space-3xs) var(--space-2xs);
+  }
+  .cine__subject {
+    inline-size: 100%;
+  }
+  /* The controls are 44px targets; keeping them flush left of the counter
+     stops the row growing a second line. */
+  .cine__controls {
+    margin-inline-start: 0;
+  }
+}
+
+/* Stillness: hold the opening frame, stop the drift, freeze the bar. */
+@media (prefers-reduced-motion: reduce) {
+  /* Matched at the same specificity as the orientation rule above, which
+     would otherwise out-rank a bare `.cine__frame` and keep the drift
+     alive for every letterboxed portrait. */
+  .cine__frame,
+  .cine__slide[data-orient="portrait"] .cine__frame,
+  .cine__slide[data-orient="portrait"][data-drift="pull"] .cine__frame {
+    animation: none;
+    transform: none;
+  }
+  .cine__bar > span {
+    animation: none;
+    transform: scaleX(1);
+  }
+  .cine__slide {
+    transition: none;
+  }
+}
+
+/* The caption and counter are re-keyed when the subject changes, so each
+   one fades in rather than swapping mid-dissolve. */
+.cine__subject,
+.cine__count {
+  animation: m-fade-in 760ms var(--ease-glide) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cine__subject,
+  .cine__count {
+    animation: none;
   }
 }

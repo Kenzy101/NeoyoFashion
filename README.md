@@ -39,7 +39,7 @@ Requires Node 18.18+ (Node 24 recommended).
 
 | Route | |
 |---|---|
-| `/` | The landing film — logo, tagline, slideshow, review ticker |
+| `/` | The landing cinema — logo, tagline, the campaign film, review ticker |
 | `/core` `/ease` | Ready-to-wear collections |
 | `/jewelry` | Macro photography + 360° turntable |
 | `/accessories` | Object studies |
@@ -74,10 +74,15 @@ hard-codes a value.
 Three things are deliberately unfinished, and each is marked `TODO(handoff)` in
 the source:
 
-1. **Photography.** Every image is a `<Plate/>` rendering warm museum light
-   procedurally in CSS. Add `src` / `video` + `alt` to the existing calls and
-   nothing else changes — ratio, grain, key light and motion are already correct.
-   See `DESIGN.md` § 6.
+1. **Photography beyond the homepage.** The landing cinema runs on real
+   campaign photography. Interior pages still use `<Plate/>`, which renders
+   warm museum light procedurally in CSS — add `src` / `video` + `alt` to the
+   existing calls and nothing else changes, since ratio, grain, key light and
+   motion are already correct. See `DESIGN.md` § 6.
+
+   To add to the homepage film, drop files in a folder and run
+   `node scripts/ingest-media.cjs "C:/path/to/media"`, then list the new slug
+   in `lib/cinema.ts`. Video is supported by the same pipeline.
 2. **Payment.** The card fields in `components/CheckoutForm.tsx` are inert markup
    for layout only — `aria-hidden`, non-interactive, collecting nothing. Replace
    that block with a hosted payment element (Paystack, Stripe, Flutterwave)

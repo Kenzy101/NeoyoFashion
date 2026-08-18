@@ -31,7 +31,9 @@
   font-weight: var(--weight-light);
   letter-spacing: var(--track-hero);
   line-height: 1;
-  text-shadow: 0 2px 40px rgba(28, 17, 11, 0.45);
+  /* The film runs under this: two shadows, one tight for edge definition
+     on a bright frame, one wide for separation on a busy one. */
+  text-shadow: 0 1px 3px rgba(28, 17, 11, 0.55), 0 2px 44px rgba(28, 17, 11, 0.7);
 }
 
 .landing__eyebrow {
@@ -69,7 +71,9 @@
     /* The rail is horizontal at this width, so the tagline returns to the
        normal gutter instead of clearing a left edge that is no longer there. */
     inset-inline-start: var(--gutter);
-    inset-block-end: calc(var(--chrome-inset) + 8.5rem);
+    /* Clears the ticker (~3.25rem), the film caption and its 44px
+       controls (~4.75rem), with a step of air between. */
+    inset-block-end: calc(var(--chrome-inset) + 11.75rem);
   }
 }
 

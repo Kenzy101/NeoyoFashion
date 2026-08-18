@@ -265,6 +265,73 @@ never a white flash while an image loads.
 
 ---
 
+## 6b. The landing cinema
+
+The homepage is a single-page film. `components/Cinema.tsx` plays the real
+campaign photography full-bleed; slides alternate deliberately between
+ready-to-wear and jewelry so the house reads as one world rather than two
+catalogues.
+
+### How it behaves
+
+- **5s dwell, 1.9s cross-dissolve.** The dissolve is longer than a third of
+  the dwell, so there is always a moment where both frames are present and
+  both are still drifting. The motion never stops; it only changes subject.
+  That continuity is the whole difference between a film and a carousel.
+- **Only three slides are ever in the DOM** (previous, current, next). The
+  next is mounted a full beat early at zero opacity so it is decoded and
+  already moving before it is seen. Nothing pops in.
+- **The caption follows the picture.** It updates 950ms after the slide
+  index, because for the first second of a dissolve the *previous* frame is
+  still the dominant image and naming the incoming one reads as a mislabel.
+- **Portrait frames are shown whole**, letterboxed over a blurred, darkened
+  bed of themselves, whenever the screen is landscape. On a fashion site the
+  cut of the garment is the subject; cropping a dress in half to fill the
+  frame defeats the point. Square and landscape frames fill edge to edge.
+  Letterboxed frames also drift on a much gentler curve (3.5% rather than
+  13%) so the push does not crop back into what the letterboxing preserved.
+
+### Colour grading
+
+Slides carry a `grade`:
+
+- `campaign` (default) — shot in the house's own warm light, needs only the
+  faintest unifying touch.
+- `studio` — the stone bracelets, which arrived as supplier stills with
+  bright white sweeps and saturated purples and teals. These are pulled back
+  toward the earth family so the film reads as one shoot.
+
+Set it per slide in `lib/cinema.ts`.
+
+### Adding photography or film
+
+Drop files into the source folder and run:
+
+```bash
+node scripts/ingest-media.cjs "C:/path/to/your/media"
+```
+
+The script produces responsive AVIF + WebP at three widths plus a blurred
+LQIP data URI for every image, copies video through untouched, and rewrites
+`lib/media.generated.ts`. It is re-runnable and skips derivatives that
+already exist. Then add the new slug to `SLIDES` in `lib/cinema.ts` with its
+`kind`, `label` and — for portrait photography — a `focus` point.
+
+**Video** is supported by the same slide list: any `.mp4` / `.webm` / `.mov`
+in the source folder becomes a `kind: "video"` asset and plays muted, looping
+and inline in the slideshow. Keep clips short (≤ 8s) and export H.264 at a
+sane bitrate; they are served as-is.
+
+### Accessibility
+
+The film auto-advances, so WCAG 2.2.2 requires a way to stop it. The
+prev / pause / next controls at bottom right are 44 × 44px, carry real
+accessible names, and the pause genuinely halts the timer. Under
+`prefers-reduced-motion` the film holds on its opening frame with all drift
+disabled — the controls still work, so the visitor drives it themselves.
+
+---
+
 ## 7. Components
 
 All are documented live at `/styleguide`.

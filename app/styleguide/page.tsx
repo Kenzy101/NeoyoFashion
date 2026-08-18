@@ -37,7 +37,7 @@ const MOTION = [
   { token: "--dur-epic", value: "2200ms", use: "Image pushes, drawn rules." },
   { token: "--ease-glide", value: "cubic-bezier(.22,1,.36,1)", use: "Default. Everything that arrives." },
   { token: "--ease-veil", value: "cubic-bezier(.65,0,.35,1)", use: "Symmetric wipes." },
-  { token: "--ease-cinema", value: "cubic-bezier(.4,0,.1,1)", use: "Slideshow crossfade, Ken Burns." },
+  { token: "--ease-cinema", value: "cubic-bezier(.4,0,.1,1)", use: "Cinema crossfade, Ken Burns." },
   { token: "--ease-silk", value: "cubic-bezier(.16,1,.3,1)", use: "Menu and large panels." },
 ];
 
