@@ -5,8 +5,6 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# The built-in token is all that is needed — Pages deploys from within the
-# repository, so there is no external credential to store anywhere.
 permissions:
   contents: read
   pages: write
@@ -16,6 +14,14 @@ permissions:
 concurrency:
   group: pages
   cancel-in-progress: false
+
+env:
+  # GitHub Pages serves a project site from /<repo>. Everything that builds
+  # a URL reads this, so assets resolve under the sub-path.
+  #
+  # Set it to an empty string if you move the site to a custom domain —
+  # then it is served from the root and the prefix must go.
+  NEXT_PUBLIC_BASE_PATH: /NeoyoFashion
 
 jobs:
   build:
@@ -28,21 +34,20 @@ jobs:
           node-version: 24
           cache: npm
 
+      # Best effort only. Enabling Pages through the API needs a token with
+      # write access, which a repository set to read-only workflow
+      # permissions will refuse. The build must not depend on it — if this
+      # step fails, the artifact is still produced and the deploy job
+      # reports the real problem.
       - name: Configure Pages
-        id: pages
+        continue-on-error: true
         uses: actions/configure-pages@v5
         with:
-          # Turns Pages on for the repository if it is not already enabled,
-          # so the first deploy does not need anyone to visit Settings.
           enablement: true
 
       - run: npm ci
 
       - name: Build static site
-        env:
-          # GitHub Pages serves project sites from /<repo>. Everything that
-          # builds a URL reads this, so assets resolve under the sub-path.
-          NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
         run: npm run build
 
       - name: Add .nojekyll
