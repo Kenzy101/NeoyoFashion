@@ -4,6 +4,8 @@
 
 The official website for NEOYO — a fashion house in Lagos, Nigeria.
 
+**Live:** https://kenzy101.github.io/NeoyoFashion/
+
 This is not an ecommerce site first. It is an experience. The landing page has no
 shop, no navigation bar and no scroll: a logo fixed to the left edge, a tagline, a
 full-screen cinematic film, and a ticker of client voices. Everything else lives
@@ -69,20 +71,47 @@ hard-codes a value.
 
 ---
 
+## Deploying
+
+Every push to `main` builds and publishes to GitHub Pages via
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). The site is a
+static export, so it needs no server and no credentials — the workflow uses
+the built-in token.
+
+**One-time setup.** Pages has to be switched on for the repository:
+*Settings → Pages → Build and deployment → Source: **GitHub Actions***. If the
+workflow's "Configure Pages" step is skipped or fails, also check
+*Settings → Actions → General → Workflow permissions* is set to
+**Read and write permissions**.
+
+Moving to a custom domain: set `NEXT_PUBLIC_BASE_PATH` to an empty string in
+the workflow, since the site is then served from the root rather than
+`/NeoyoFashion`.
+
+To build the exported site locally:
+
+```bash
+NEXT_PUBLIC_BASE_PATH=/NeoyoFashion npm run build
+```
+
+The output lands in `out/`.
+
+---
+
 ## Before this goes live
 
 Three things are deliberately unfinished, and each is marked `TODO(handoff)` in
 the source:
 
-1. **Photography beyond the homepage.** The landing cinema runs on real
-   campaign photography. Interior pages still use `<Plate/>`, which renders
-   warm museum light procedurally in CSS — add `src` / `video` + `alt` to the
-   existing calls and nothing else changes, since ratio, grain, key light and
-   motion are already correct. See `DESIGN.md` § 6.
+1. **Accessories photography.** Everything else runs on the real shoot. The
+   four accessories carry an empty `shots` list in `lib/catalog.ts` and fall
+   back to the procedural plate, because inventing a placeholder that looks
+   like a product would be worse than an honest absence.
 
-   To add to the homepage film, drop files in a folder and run
-   `node scripts/ingest-media.cjs "C:/path/to/media"`, then list the new slug
-   in `lib/cinema.ts`. Video is supported by the same pipeline.
+   To add photography anywhere: drop the files in a folder, run
+   `node scripts/ingest-media.cjs "C:/path/to/media"`, then reference the new
+   slug — in `shots` for a product, or in `lib/cinema.ts` for the homepage
+   film. Video works through the same pipeline. See `DESIGN.md` § 6.
 2. **Payment.** The card fields in `components/CheckoutForm.tsx` are inert markup
    for layout only — `aria-hidden`, non-interactive, collecting nothing. Replace
    that block with a hosted payment element (Paystack, Stripe, Flutterwave)

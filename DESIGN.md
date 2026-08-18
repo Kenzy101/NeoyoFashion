@@ -255,13 +255,26 @@ never a white flash while an image loads.
 `motion`: `still` · `kenburns` · `kenburns-alt` · `silk`
 `light`: `key` (default) · `none` (macro and product-on-white)
 
-### When real photography arrives
+### Adding photography
 
-1. Drop files into `public/img/` and `public/film/`.
-2. Add `src` / `video` + `alt` to the `Plate` calls. **Nothing else changes** —
-   ratio, grain, key light, motion and hover behaviour are already correct.
-3. Video: muted, looping, inline, ≤ 6s, ≤ 2MB, H.264 + WebM.
-4. Keep the tone prop. It stays as the load-in colour behind the asset.
+The site runs on the real shoot everywhere except Accessories. To add more:
+
+1. Drop the files in a folder and run
+   `node scripts/ingest-media.cjs "C:/path/to/media"`. It writes responsive
+   AVIF + WebP at three widths plus a blurred LQIP for each image, copies
+   video through, and regenerates `lib/media.generated.ts`. Re-runnable —
+   it skips derivatives that already exist.
+2. Reference the slug:
+   - a product → add it to `shots` in `lib/catalog.ts` (first entry is the hero)
+   - the homepage film → add a slide to `lib/cinema.ts`
+   - an editorial page → pass `slug` to `<Plate/>`
+3. Keep the `tone` prop. It stays as the load-in colour behind the asset, so
+   there is never a white flash.
+4. Set `grade="studio"` for anything not shot in the house's own light.
+
+**Never** hand-write a `/media/...` path. Everything goes through
+`lib/media.ts`, which applies the deployment base path — a raw path 404s on
+GitHub Pages, where the site is served from a sub-directory.
 
 ---
 
@@ -329,6 +342,35 @@ prev / pause / next controls at bottom right are 44 × 44px, carry real
 accessible names, and the pause genuinely halts the timer. Under
 `prefers-reduced-motion` the film holds on its opening frame with all drift
 disabled — the controls still work, so the visitor drives it themselves.
+
+---
+
+## 6c. Deployment
+
+The site is a **static export** — every route is prerendered, there are no API
+routes, server actions or middleware — so it is flat files and can be served
+from anywhere.
+
+`.github/workflows/deploy.yml` builds on every push to `main` and publishes to
+GitHub Pages using the built-in token. No credential is stored anywhere.
+
+Two things are easy to get wrong:
+
+1. **The base path.** GitHub Pages serves a project site from `/<repo>`. Next
+   rewrites its own `<Link>` and `next/image` URLs but *not* hand-written
+   strings, so `NEXT_PUBLIC_BASE_PATH` is threaded through `lib/media.ts` and
+   every media URL is built there. Moving to a custom domain means setting it
+   to an empty string.
+2. **RSC payload paths.** Next 16's export writes a route's payload to
+   `__next.core/__PAGE__.txt` while the client router prefetches
+   `__next.core.__PAGE__.txt`. Every prefetch 404s and each client navigation
+   silently degrades to a full document request.
+   `scripts/flatten-rsc.mjs` runs as `postbuild` and writes the flat name the
+   router asks for. If a future Next release fixes the path, the extra files
+   simply go unrequested.
+
+`out/.nojekyll` is required — without it GitHub's Jekyll pass strips `_next`
+and the site loads unstyled.
 
 ---
 

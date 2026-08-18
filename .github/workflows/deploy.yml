@@ -40,10 +40,30 @@ jobs:
       # step fails, the artifact is still produced and the deploy job
       # reports the real problem.
       - name: Configure Pages
+        id: pages
         continue-on-error: true
         uses: actions/configure-pages@v5
         with:
           enablement: true
+
+      # Turn a cryptic deploy failure into an instruction. Enabling Pages
+      # through the API needs a write-scoped token, which a repository set
+      # to read-only workflow permissions will refuse — and no workflow can
+      # grant itself more than the repository allows.
+      - name: Explain Pages setup if it could not be enabled
+        if: steps.pages.outcome == 'failure'
+        run: |
+          echo "::warning title=GitHub Pages is not enabled::The workflow could not enable it automatically."
+          echo ""
+          echo "The build below will still run and produce the site, but the deploy"
+          echo "step cannot publish until Pages is switched on by hand — twice clicked,"
+          echo "once and for all:"
+          echo ""
+          echo "  1. Settings -> Pages -> Build and deployment -> Source: GitHub Actions"
+          echo "  2. Settings -> Actions -> General -> Workflow permissions:"
+          echo "     Read and write permissions"
+          echo ""
+          echo "Then re-run this workflow (Actions -> Deploy to GitHub Pages -> Run workflow)."
 
       - run: npm ci
 
