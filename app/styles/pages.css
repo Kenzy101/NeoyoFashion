@@ -1160,3 +1160,79 @@
 .swatch[data-wide="true"] {
   min-inline-size: 5.5rem;
 }
+
+/* =============================================================
+   COLLECTION LINES — the tab set inside a divided collection
+   ============================================================= */
+
+.lines {
+  display: grid;
+  gap: var(--space-md);
+  padding-block-end: var(--space-xl);
+}
+
+.lines__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: clamp(var(--space-md), 4vw, var(--space-2xl));
+  padding-block-end: var(--space-sm);
+  border-block-end: var(--border-hair) solid var(--line-soft);
+}
+
+/* Set in the display serif: these are the names of two collections, not
+   the labels on a filter row. */
+.lines__tab {
+  position: relative;
+  padding: 0 0 var(--space-2xs);
+  min-height: 2.75rem;
+  font-family: var(--font-display);
+  font-size: var(--text-title);
+  font-weight: var(--weight-light);
+  letter-spacing: var(--track-title);
+  line-height: 1.1;
+  color: var(--ink-faint);
+  transition: color var(--dur-calm) var(--ease-glide);
+}
+
+.lines__tab:hover {
+  color: var(--ink-muted);
+}
+
+/* The gold rule draws under the chosen line, from the left. */
+.lines__tab::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: -1px;
+  block-size: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-calm) var(--ease-glide);
+}
+
+.lines__tab[aria-selected="true"] {
+  color: var(--ink);
+}
+
+.lines__tab[aria-selected="true"]::after {
+  transform: scaleX(1);
+}
+
+.lines__lede {
+  font-family: var(--font-display);
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-light);
+  line-height: var(--leading-loose);
+  color: var(--ink-muted);
+  max-width: var(--measure-wide);
+  /* Re-keyed per line, so the sentence fades rather than swapping. */
+  animation: m-fade-in var(--dur-calm) var(--ease-glide) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lines__lede {
+    animation: none;
+  }
+}

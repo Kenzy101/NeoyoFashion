@@ -24,10 +24,28 @@ export type Product = {
   atelier: string;
   care: string;
   sizes?: string[];
+  /**
+   * Which line within the collection this piece belongs to. Only Core is
+   * divided; everything else is a single run and leaves this unset.
+   */
+  line?: string;
   /** Jewelry: offer the 360° viewer alongside the gallery. */
   rotate?: boolean;
   /** Garments: render the slow fabric film beneath the gallery. */
   fabric?: string;
+};
+
+/**
+ * A line within a collection. Core holds two; Ease, Jewelry and
+ * Accessories are each a single run and define none, which is what makes
+ * the collection page render a plain grid rather than tabs.
+ */
+export type CollectionLine = {
+  id: string;
+  title: string;
+  /** One sentence. It sits under the tabs, so it must be short. */
+  lede: string;
+  hero?: string;
 };
 
 export type Collection = {
@@ -39,6 +57,8 @@ export type Collection = {
   hero?: string;
   /** The register the collection is shot in. */
   register: string;
+  /** Present only where the collection is divided. */
+  lines?: CollectionLine[];
 };
 
 export const COLLECTIONS: Record<CollectionId, Collection> = {
@@ -49,6 +69,20 @@ export const COLLECTIONS: Record<CollectionId, Collection> = {
     tone: "bone",
     hero: "1767551647754",
     register: "Editorial portrait and gallery still, warm museum key, deep whitespace.",
+    lines: [
+      {
+        id: "lumina",
+        title: "Lumina",
+        lede: "The pieces that catch the room. Metallic, bonded and bright — cut to be seen from across it.",
+        hero: "img-5708",
+      },
+      {
+        id: "within-her",
+        title: "Within Her",
+        lede: "The quieter half. Ivory, bouclé and organza, worked so the detail only arrives when she is close.",
+        hero: "img-5714",
+      },
+    ],
   },
   ease: {
     id: "ease",
@@ -91,6 +125,7 @@ export const PRODUCTS: Product[] = [
     atelier: "Draped on the stand. Nine days of tiering by hand.",
     care: "Dry clean by specialist only. Hang from the shoulder.",
     sizes: GARMENT_SIZES,
+    line: "within-her",
     fabric: "Organza, falling at quarter speed.",
   },
   {
@@ -105,6 +140,7 @@ export const PRODUCTS: Product[] = [
     atelier: "Cut and finished in Lagos over eleven days.",
     care: "Dry clean by specialist only. Store boxed.",
     sizes: GARMENT_SIZES,
+    line: "within-her",
   },
   {
     slug: "the-ruffle-gown",
@@ -118,6 +154,7 @@ export const PRODUCTS: Product[] = [
     atelier: "Peplum set by hand. The skirt is built in fourteen tiers.",
     care: "Dry clean by specialist only.",
     sizes: GARMENT_SIZES,
+    line: "lumina",
     fabric: "Velvet and lace, turning in still air.",
   },
   {
@@ -132,6 +169,7 @@ export const PRODUCTS: Product[] = [
     atelier: "Pattern corrected across four fittings before release.",
     care: "Dry clean. Press under a cloth.",
     sizes: GARMENT_SIZES,
+    line: "lumina",
   },
 
   /* ------------------------------- EASE ------------------------------- */
@@ -356,6 +394,10 @@ export const PRODUCTS: Product[] = [
 
 export const byCollection = (id: CollectionId): Product[] =>
   PRODUCTS.filter((p) => p.collection === id);
+
+/** The pieces in one line of a collection. */
+export const byLine = (id: CollectionId, line: string): Product[] =>
+  PRODUCTS.filter((p) => p.collection === id && p.line === line);
 
 export const bySlug = (slug: string): Product | undefined =>
   PRODUCTS.find((p) => p.slug === slug);

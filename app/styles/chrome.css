@@ -406,20 +406,14 @@
   z-index: 1;
   block-size: 100%;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  /* List, then foot. There is no head row: the index label and whisper
+     line were removed, and a phantom `auto` track would leave a gap the
+     eye reads as a missing element. */
+  grid-template-rows: 1fr auto;
   padding-block: calc(var(--chrome-inset) + 3rem) var(--chrome-inset);
   padding-inline: max(var(--gutter), var(--rail-width));
   overflow-y: auto;
   overscroll-behavior: contain;
-}
-
-.menu__head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: var(--space-md);
-  /* 54% clears AA on the espresso veil; 46% did not. */
-  color: color-mix(in srgb, var(--neoyo-bone-white) 54%, transparent);
 }
 
 .menu__list {

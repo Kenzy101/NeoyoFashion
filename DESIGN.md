@@ -445,6 +445,38 @@ order once a payment provider is wired in.
 
 ---
 
+## 6e. Navigation and collection lines
+
+**The menu** is six items, set in initial caps rather than the wordmark's
+uppercase: at that size the serif is the voice, and shouting it would
+fight the film behind it. "VIP" stays an acronym — "Vip" reads as a
+mistake, not a style.
+
+Campaigns, Journal, About and Contact are no longer offered. Their routes
+still build and still resolve, so nothing already linked or shared breaks.
+Delete the directories under `app/` to remove them entirely.
+
+**The trigger sits above the menu** (`--z-trigger: 75` against
+`--z-menu: 70`). It has to: the trigger is also the close button, and a
+panel that covers its own control cannot be dismissed by it. That was a
+real bug — the menu opened and then refused to close.
+
+**Lines.** A collection may be divided. Core holds two — Lumina and
+Within Her — and `<CollectionLines/>` renders them as a real tab set:
+`role="tablist"`, arrow-key navigation, one tab stop for the group. Each
+panel mounts only while selected, so the reveals replay on switch and the
+page never holds two collections of imagery at once.
+
+Ease, Jewelry and Accessories define no lines, and that absence is what
+makes their pages render a plain hero-and-grid. To divide a collection,
+add `lines` to it in `lib/catalog.ts` and give each piece a `line`.
+
+The split of Core is a starting arrangement — Lumina for the pieces that
+catch the room, Within Her for the quieter half. Reassign by editing one
+`line` field per product.
+
+---
+
 ## 7. Components
 
 All are documented live at `/styleguide`.

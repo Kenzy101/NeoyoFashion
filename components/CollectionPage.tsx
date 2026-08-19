@@ -4,6 +4,7 @@ import Onward from "./Onward";
 import PageHead from "./PageHead";
 import Plate from "./Plate";
 import ProductCard from "./ProductCard";
+import CollectionLines from "./CollectionLines";
 import Reveal from "./Reveal";
 import { BRAND } from "@/lib/brand";
 import { byCollection, COLLECTIONS, type CollectionId } from "@/lib/catalog";
@@ -37,6 +38,13 @@ export default function CollectionPage({
         lede={collection.lede}
       />
 
+      {/* Core is divided into lines and hands off to the tab set. Ease,
+          Jewelry and Accessories are single runs and keep the plain
+          hero-and-grid below. */}
+      {collection.lines?.length ? (
+        <CollectionLines collection={collection} products={products} />
+      ) : (
+        <>
       {/* A full-bleed opening plate — the collection's register, stated once.
           Full-bleed wrappers always reveal with `fade`: a scaling entrance
           on a 100%-wide element pushes past the viewport and produces a
@@ -68,6 +76,8 @@ export default function CollectionPage({
           ))}
         </div>
       </section>
+        </>
+      )}
 
       {/* The fabric register — slow flowing textile, full width */}
       {fabric ? (

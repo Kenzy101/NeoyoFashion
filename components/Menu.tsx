@@ -125,11 +125,6 @@ export default function Menu({ open, onClose, triggerRef }: Props) {
       </div>
 
       <div className="menu__inner" ref={panelRef}>
-        <div className="menu__head">
-          <span className="u-hairline">Index</span>
-          <span className="u-hairline">{NAV[active]?.whisper}</span>
-        </div>
-
         <nav aria-label="Main">
           <ul className="menu__list">
             {NAV.map((item, i) => (

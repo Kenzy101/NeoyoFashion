@@ -42,13 +42,13 @@ Requires Node 18.18+ (Node 24 recommended).
 | Route | |
 |---|---|
 | `/` | The landing cinema — logo, tagline, the campaign film, review ticker |
-| `/core` `/ease` | Made to order collections |
+| `/core` | Made to order — two lines, Lumina and Within Her, in tabs |
+| `/ease` | Made to order — a single run |
 | `/jewelry` | Macro photography + 360° turntable |
 | `/accessories` | Object studies |
 | `/vip` | The private room |
-| `/campaigns` | Four seasons on film |
-| `/about` `/journal` | The house, and notes from the atelier |
-| `/contact` `/appointments` | Client care and the appointment request |
+| `/appointments` | The appointment request |
+| `/campaigns` `/about` `/journal` `/contact` | Built, but no longer in the navigation |
 | `/product/[slug]` | 16 product pages, statically generated |
 | `/checkout` | One page. No steps. |
 | **`/styleguide`** | **The live component library, tokens and handoff** |
