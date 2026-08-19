@@ -50,7 +50,7 @@ Requires Node 18.18+ (Node 24 recommended).
 | `/appointments` | The appointment request |
 | `/campaigns` `/about` `/journal` `/contact` | Built, but no longer in the navigation |
 | `/product/[slug]` | 16 product pages, statically generated |
-| `/checkout` | One page. No steps. |
+| `/cart` `/checkout` | The bag, and a one-page checkout |
 | **`/styleguide`** | **The live component library, tokens and handoff** |
 
 All 16 routes are statically prerendered.
@@ -116,8 +116,8 @@ the source:
    for layout only — `aria-hidden`, non-interactive, collecting nothing. Replace
    that block with a hosted payment element (Paystack, Stripe, Flutterwave)
    before any real order. Card data must never reach NEOYO's servers.
-3. **Form endpoints.** Contact, appointments and checkout validate and confirm on
-   the client; wire them to a server action or API route.
+3. **Form endpoints.** Appointments and checkout validate and confirm on the
+   client; wire them to a server action or API route.
 
 ### Bag and currency
 
