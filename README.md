@@ -48,8 +48,7 @@ Requires Node 18.18+ (Node 24 recommended).
 | `/accessories` | Object studies |
 | `/vip` | The private room |
 | `/appointments` | The appointment request |
-| `/campaigns` `/about` `/journal` `/contact` | Built, but no longer in the navigation |
-| `/product/[slug]` | 16 product pages, statically generated |
+| `/product/[slug]` | 19 product pages, statically generated |
 | `/cart` `/checkout` | The bag, and a one-page checkout |
 | **`/styleguide`** | **The live component library, tokens and handoff** |
 
