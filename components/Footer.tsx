@@ -11,7 +11,7 @@ export default function Footer() {
           <div className="foot__col">
             <span className="u-hairline">{BRAND.tagline}</span>
             <p className="u-body" style={{ maxWidth: "26ch" }}>
-              A house built in {BRAND.city}. Cut once, corrected for years.
+              Made to order.
             </p>
             <a className="u-label m-underline" href={`mailto:${BRAND.email}`}>
               {BRAND.email}

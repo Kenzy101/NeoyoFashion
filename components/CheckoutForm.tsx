@@ -207,7 +207,7 @@ export default function CheckoutForm() {
           </div>
 
           {resolved.map((line) => (
-            <div className="summary__line" key={`${line.slug}-${line.size ?? ""}`}>
+            <div className="summary__line" key={line.id}>
               <Plate
                 tone={line.product.tone}
                 slug={line.product.shots[0]}
@@ -222,6 +222,7 @@ export default function CheckoutForm() {
                 <span className="u-caption">
                   {line.size ? `${line.size} · ` : ""}
                   {line.qty}
+                  {line.measurements ? " · made to measure" : ""}
                 </span>
               </div>
               <Price ngn={line.product.price * line.qty} className="u-caption" />

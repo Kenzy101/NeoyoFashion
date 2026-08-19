@@ -227,27 +227,14 @@
   margin-block: var(--space-md);
 }
 
-.rail__mark {
-  font-size: var(--text-hairline);
-  letter-spacing: var(--track-hairline);
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  writing-mode: vertical-rl;
-}
-
 /* Landing page renders the rail over imagery — force bone ink */
 .rail[data-over-media="true"] .rail__logo {
   color: var(--neoyo-bone-white);
   text-shadow: 0 1px 14px rgba(28, 17, 11, 0.5);
 }
 
-.rail[data-over-media="true"] .rail__mark {
-  color: color-mix(in srgb, var(--neoyo-bone-white) 74%, transparent);
-  text-shadow: 0 1px 14px rgba(28, 17, 11, 0.6);
-}
-
 /* On the landing the review ticker is docked to the bottom edge, so the
-   rail's foot mark has to sit above it rather than behind it. */
+   rail's hairline stops above it rather than running behind it. */
 .rail[data-over-media="true"] {
   padding-block-end: calc(var(--chrome-inset) + 3.25rem);
 }
@@ -306,16 +293,23 @@
     opacity var(--dur-quick) var(--ease-glide);
 }
 
-.trigger__bar:nth-child(1) {
+/* Three bars, ragged at rest so the mark reads as drawn rather than
+   stamped, levelling on approach. Two bars read as a fragment; three
+   read unmistakably as a menu. */
+.trigger__bar:nth-child(2) {
   inline-size: 1.75rem;
 }
 
-.trigger__bar:nth-child(2) {
-  inline-size: 1.1rem;
+.trigger__bar:nth-child(3) {
+  inline-size: 1.35rem;
 }
 
-.trigger:hover .trigger__bar:nth-child(2),
-.trigger:focus-visible .trigger__bar:nth-child(2) {
+.trigger__bar:nth-child(4) {
+  inline-size: 0.95rem;
+}
+
+.trigger:hover .trigger__bar,
+.trigger:focus-visible .trigger__bar {
   inline-size: 1.75rem;
 }
 
@@ -336,11 +330,17 @@
   position: absolute;
 }
 
-.trigger[aria-expanded="true"] .trigger__bar:nth-child(1) {
+.trigger[aria-expanded="true"] .trigger__bar:nth-child(2) {
   transform: rotate(45deg);
 }
 
-.trigger[aria-expanded="true"] .trigger__bar:nth-child(2) {
+/* The middle bar has nowhere to go in a cross, so it leaves. */
+.trigger[aria-expanded="true"] .trigger__bar:nth-child(3) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.trigger[aria-expanded="true"] .trigger__bar:nth-child(4) {
   transform: rotate(-45deg);
 }
 
@@ -688,45 +688,15 @@
   filter: saturate(0.96) contrast(1.02);
 }
 
-/* Portrait photography on a landscape screen is shown whole. On a fashion
-   site the cut of the garment is the subject — cropping a dress in half to
-   fill the frame defeats the point, and the letterbox is the cinematic
-   register the house wants. The bed fills the margins. */
-@media (orientation: landscape) {
-  .cine__slide[data-orient="portrait"] .cine__media {
-    object-fit: contain;
-  }
+/* Every frame fills the screen, on every device — no letterbox, no side
+   borders. `object-fit: cover` on .cine__media does the work above; the
+   blurred bed stays in the markup only as the ground a frame paints over
+   while it decodes.
 
-  /* A letterboxed frame is letterboxed precisely so the whole garment is
-     visible — hem, shoulder and all. The full 13% push would crop back
-     into it and undo that, so contained frames drift on a much gentler
-     curve: enough that the image is alive, not enough to lose the cut. */
-  .cine__slide[data-orient="portrait"] .cine__frame {
-    animation-name: cine-push-soft;
-  }
-
-  .cine__slide[data-orient="portrait"][data-drift="pull"] .cine__frame {
-    animation-name: cine-pull-soft;
-  }
-}
-
-@keyframes cine-push-soft {
-  from {
-    transform: scale(1) translate3d(0, 0, 0);
-  }
-  to {
-    transform: scale(1.035) translate3d(-0.5%, -0.4%, 0);
-  }
-}
-
-@keyframes cine-pull-soft {
-  from {
-    transform: scale(1.035) translate3d(0.4%, 0.35%, 0);
-  }
-  to {
-    transform: scale(1) translate3d(0, 0, 0);
-  }
-}
+   The crop is the price of filling the screen, and `focus` in
+   lib/cinema.ts pays it: each portrait names the band of the frame that
+   must survive. On a phone, where the viewport is itself portrait, the
+   crop is slight and the frame reads almost whole. */
 
 @keyframes cine-push {
   from {

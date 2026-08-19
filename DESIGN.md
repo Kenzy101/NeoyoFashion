@@ -411,6 +411,40 @@ functions, read the country header and pass it in instead.
 
 ---
 
+## 6d. Sizing and made-to-measure
+
+`lib/sizing.ts` holds the house size chart, transcribed from the official
+board. All measurements are in inches. The board prints "BURST" and
+"UNDER BURST"; spelled correctly in the code, since clients read this.
+
+Sizes run **6 – 20**. Garments (Core and Ease) use that run; jewelry keeps
+its own lengths, and a bracelet is never made to measure — it is cut to a
+length, not to a body.
+
+**The chart** (`<SizeChart/>`) is collapsed by default. A product page is
+photography, and a table of numbers is the least cinematic object in the
+system. It opens as a real disclosure — a button owning `aria-expanded`
+over a region genuinely removed from the page when shut. Seven columns of
+inches will not fit a phone, so the table scrolls inside its own
+container, which is keyboard-reachable. The visitor's current fit is
+highlighted, so the chart answers a question in context.
+
+**Custom orders.** The fit selector ends with a `Custom` chip. Choosing it
+opens a measurement form built on the same six columns as the chart, so a
+client reads the chart and fills in the identical figures. Adding to bag
+without them is refused, with focus sent to the first missing field.
+
+A custom line **never merges** with anything: two made-to-measure orders of
+the same dress in the same nominal fit are different garments. That is why
+every bag line carries a stable `id` rather than being addressed by piece
+and size — without it a custom line could not be edited or removed at all.
+
+The bag shows the figures back to the client, and checkout marks the line
+"made to measure". Nothing is transmitted; the measurements travel with the
+order once a payment provider is wired in.
+
+---
+
 ## 7. Components
 
 All are documented live at `/styleguide`.

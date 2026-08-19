@@ -44,9 +44,6 @@ export default function Chrome() {
           {BRAND.name}
         </Link>
         <span className="rail__line" aria-hidden="true" />
-        <span className="rail__mark" aria-hidden="true">
-          {BRAND.city}
-        </span>
       </div>
 
       {/* The only control on the landing page */}
@@ -61,6 +58,7 @@ export default function Chrome() {
         data-print-hide
       >
         <span className="u-sr-only">{open ? "Close menu" : "Open menu"}</span>
+        <span className="trigger__bar" aria-hidden="true" />
         <span className="trigger__bar" aria-hidden="true" />
         <span className="trigger__bar" aria-hidden="true" />
       </button>

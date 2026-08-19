@@ -1,4 +1,5 @@
 import type { PlateTone } from "./plate";
+import { GARMENT_SIZES } from "./sizing";
 
 export type CollectionId = "core" | "ease" | "jewelry" | "accessories";
 
@@ -89,7 +90,7 @@ export const PRODUCTS: Product[] = [
     materials: "Bouclé tweed bodice. Silk organza and lace tiering.",
     atelier: "Draped on the stand. Nine days of tiering by hand.",
     care: "Dry clean by specialist only. Hang from the shoulder.",
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: GARMENT_SIZES,
     fabric: "Organza, falling at quarter speed.",
   },
   {
@@ -103,7 +104,7 @@ export const PRODUCTS: Product[] = [
     materials: "Ivory bouclé. Hand-tied velvet rosettes on a chain lattice.",
     atelier: "Cut and finished in Lagos over eleven days.",
     care: "Dry clean by specialist only. Store boxed.",
-    sizes: ["XS", "S", "M", "L"],
+    sizes: GARMENT_SIZES,
   },
   {
     slug: "the-ruffle-gown",
@@ -116,7 +117,7 @@ export const PRODUCTS: Product[] = [
     materials: "Liquid magenta lamé. Layered velvet and lace ruffling.",
     atelier: "Peplum set by hand. The skirt is built in fourteen tiers.",
     care: "Dry clean by specialist only.",
-    sizes: ["XS", "S", "M", "L"],
+    sizes: GARMENT_SIZES,
     fabric: "Velvet and lace, turning in still air.",
   },
   {
@@ -130,7 +131,7 @@ export const PRODUCTS: Product[] = [
     materials: "Bonded crêpe. Sculpted neckline with a self bow.",
     atelier: "Pattern corrected across four fittings before release.",
     care: "Dry clean. Press under a cloth.",
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: GARMENT_SIZES,
   },
 
   /* ------------------------------- EASE ------------------------------- */
@@ -145,7 +146,7 @@ export const PRODUCTS: Product[] = [
     materials: "Textured black jacquard. Cupro lining in bone.",
     atelier: "Hand-padded shoulder. Off-shoulder line set on the stand.",
     care: "Dry clean. Hang immediately.",
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: GARMENT_SIZES,
   },
   {
     slug: "the-boucle-off-shoulder",
@@ -158,7 +159,7 @@ export const PRODUCTS: Product[] = [
     materials: "Cream bouclé with sequin fleck. Concealed back closure.",
     atelier: "Fully fashioned. Linked by hand at the shoulder.",
     care: "Dry clean preferred.",
-    sizes: ["XS", "S", "M", "L"],
+    sizes: GARMENT_SIZES,
   },
   {
     slug: "the-shadow-dress",
@@ -171,7 +172,7 @@ export const PRODUCTS: Product[] = [
     materials: "Black jacquard. Wrap front, self tie.",
     atelier: "Cut wide from a single length and closed by hand.",
     care: "Dry clean. Store rolled, never folded.",
-    sizes: ["XS", "S", "M", "L"],
+    sizes: GARMENT_SIZES,
     fabric: "Jacquard, moving on a slow exhale.",
   },
   {
@@ -185,7 +186,7 @@ export const PRODUCTS: Product[] = [
     materials: "Ivory and blush bouclé. Detachable marabou cuffs and collar.",
     atelier: "The cuffs are removable — the dress outlives the trim.",
     care: "Dry clean. Store the trim separately.",
-    sizes: ["XS", "S", "M", "L"],
+    sizes: GARMENT_SIZES,
   },
 
   /* ------------------------------ JEWELRY -----------------------------

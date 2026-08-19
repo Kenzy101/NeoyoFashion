@@ -16,6 +16,7 @@ import {
   type Region,
 } from "@/lib/currency";
 import { bySlug, type Product } from "@/lib/catalog";
+import type { Measurements } from "@/lib/sizing";
 
 /* =====================================================================
    CURRENCY
@@ -90,10 +91,19 @@ export function useCurrency(): CurrencyState {
    ===================================================================== */
 
 export type BagLine = {
+  /**
+   * Stable identity for the line. Needed because a custom order cannot be
+   * addressed by piece and size alone: two made-to-measure orders of the
+   * same dress in the same nominal fit are different garments, and both
+   * must remain independently editable.
+   */
+  id: string;
   slug: string;
-  /** Undefined for pieces sold in one size. */
+  /** Undefined for pieces sold in one size. "Custom" for made-to-measure. */
   size?: string;
   qty: number;
+  /** Present only on a custom order. Inches, as the client gave them. */
+  measurements?: Measurements;
 };
 
 export type ResolvedLine = BagLine & { product: Product };
@@ -104,9 +114,14 @@ type BagState = {
   count: number;
   /** Subtotal in Naira — the currency layer converts for display. */
   subtotal: number;
-  add: (slug: string, size: string | undefined, qty?: number) => void;
-  setQty: (slug: string, size: string | undefined, qty: number) => void;
-  remove: (slug: string, size: string | undefined) => void;
+  add: (
+    slug: string,
+    size: string | undefined,
+    qty?: number,
+    measurements?: Measurements,
+  ) => void;
+  setQty: (id: string, qty: number) => void;
+  remove: (id: string) => void;
   clear: () => void;
   /** False until localStorage has been read. */
   ready: boolean;
@@ -118,9 +133,12 @@ const BagContext = createContext<BagState | null>(null);
 
 const BAG_KEY = "neoyo:bag";
 
-/** Two lines are the same line only if both piece and size match. */
-const sameLine = (l: BagLine, slug: string, size?: string) =>
-  l.slug === slug && (l.size ?? "") === (size ?? "");
+/** Stock lines share an id, so adding the same size twice increments it. */
+const stockId = (slug: string, size?: string) => `${slug}|${size ?? ""}`;
+
+/** Custom lines never collide — each order is its own garment. */
+let customSeq = 0;
+const customId = (slug: string) => `${slug}|custom|${++customSeq}|${Date.now()}`;
 
 function BagProvider({ children }: { children: React.ReactNode }) {
   const [lines, setLines] = useState<BagLine[]>([]);
@@ -136,14 +154,20 @@ function BagProvider({ children }: { children: React.ReactNode }) {
         const parsed: unknown = JSON.parse(raw);
         if (Array.isArray(parsed)) {
           setLines(
-            parsed.filter(
-              (l): l is BagLine =>
-                !!l &&
-                typeof (l as BagLine).slug === "string" &&
-                Number.isFinite((l as BagLine).qty) &&
-                // Drop anything whose piece has since left the collection.
-                Boolean(bySlug((l as BagLine).slug)),
-            ),
+            parsed
+              .filter(
+                (l): l is BagLine =>
+                  !!l &&
+                  typeof (l as BagLine).slug === "string" &&
+                  Number.isFinite((l as BagLine).qty) &&
+                  // Drop anything whose piece has since left the collection.
+                  Boolean(bySlug((l as BagLine).slug)),
+              )
+              // Bags stored before ids existed are repaired rather than dropped.
+              .map((l) => ({
+                ...l,
+                id: l.id ?? (l.measurements ? customId(l.slug) : stockId(l.slug, l.size)),
+              })),
           );
         }
       }
@@ -164,30 +188,36 @@ function BagProvider({ children }: { children: React.ReactNode }) {
     }
   }, [lines, ready]);
 
-  const add = useCallback((slug: string, size: string | undefined, qty = 1) => {
-    setLines((prev) => {
-      const i = prev.findIndex((l) => sameLine(l, slug, size));
-      if (i === -1) return [...prev, { slug, size, qty }];
-      const next = [...prev];
-      next[i] = { ...next[i], qty: Math.min(next[i].qty + qty, 9) };
-      return next;
-    });
-    setLastAdded(slug);
-    window.setTimeout(() => setLastAdded(null), 2600);
-  }, []);
+  const add = useCallback(
+    (slug: string, size: string | undefined, qty = 1, measurements?: Measurements) => {
+      setLines((prev) => {
+        // A custom order always opens its own line.
+        if (measurements) {
+          return [...prev, { id: customId(slug), slug, size, qty, measurements }];
+        }
+        const id = stockId(slug, size);
+        const i = prev.findIndex((l) => l.id === id);
+        if (i === -1) return [...prev, { id, slug, size, qty }];
+        const next = [...prev];
+        next[i] = { ...next[i], qty: Math.min(next[i].qty + qty, 9) };
+        return next;
+      });
+      setLastAdded(slug);
+      window.setTimeout(() => setLastAdded(null), 2600);
+    },
+    [],
+  );
 
-  const setQty = useCallback((slug: string, size: string | undefined, qty: number) => {
+  const setQty = useCallback((id: string, qty: number) => {
     setLines((prev) =>
       qty <= 0
-        ? prev.filter((l) => !sameLine(l, slug, size))
-        : prev.map((l) =>
-            sameLine(l, slug, size) ? { ...l, qty: Math.min(qty, 9) } : l,
-          ),
+        ? prev.filter((l) => l.id !== id)
+        : prev.map((l) => (l.id === id ? { ...l, qty: Math.min(qty, 9) } : l)),
     );
   }, []);
 
-  const remove = useCallback((slug: string, size: string | undefined) => {
-    setLines((prev) => prev.filter((l) => !sameLine(l, slug, size)));
+  const remove = useCallback((id: string) => {
+    setLines((prev) => prev.filter((l) => l.id !== id));
   }, []);
 
   const clear = useCallback(() => setLines([]), []);

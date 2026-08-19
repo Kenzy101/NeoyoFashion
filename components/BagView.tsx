@@ -8,6 +8,7 @@ import CurrencySwitch from "./CurrencySwitch";
 import Reveal from "./Reveal";
 import { BRAND } from "@/lib/brand";
 import { formatMoney } from "@/lib/currency";
+import { MEASUREMENT_FIELDS } from "@/lib/sizing";
 
 /**
  * The bag.
@@ -76,7 +77,7 @@ export default function BagView() {
 
           <ul className="bag__list">
             {resolved.map((line) => (
-              <li className="bag__line" key={`${line.slug}-${line.size ?? ""}`}>
+              <li className="bag__line" key={line.id}>
                 <Link
                   href={`/product/${line.slug}`}
                   className="bag__frame"
@@ -102,11 +103,24 @@ export default function BagView() {
                     </span>
                   ) : null}
 
+                  {/* A custom order carries its figures with it, so the
+                      client can check what the atelier was given. */}
+                  {line.measurements ? (
+                    <dl className="bag__measure">
+                      {MEASUREMENT_FIELDS.filter((f) => line.measurements?.[f.key]).map((f) => (
+                        <div key={f.key}>
+                          <dt>{f.label}</dt>
+                          <dd>{line.measurements?.[f.key]}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  ) : null}
+
                   <div className="bag__qty" role="group" aria-label={`Quantity, ${line.product.name}`}>
                     <button
                       type="button"
                       className="bag__step"
-                      onClick={() => setQty(line.slug, line.size, line.qty - 1)}
+                      onClick={() => setQty(line.id, line.qty - 1)}
                       aria-label="One fewer"
                     >
                       &minus;
@@ -117,7 +131,7 @@ export default function BagView() {
                     <button
                       type="button"
                       className="bag__step"
-                      onClick={() => setQty(line.slug, line.size, line.qty + 1)}
+                      onClick={() => setQty(line.id, line.qty + 1)}
                       aria-label="One more"
                       disabled={line.qty >= 9}
                     >
@@ -127,7 +141,7 @@ export default function BagView() {
                     <button
                       type="button"
                       className="btn btn--quiet bag__remove"
-                      onClick={() => remove(line.slug, line.size)}
+                      onClick={() => remove(line.id)}
                     >
                       Remove
                       <span className="u-sr-only"> {line.product.name}</span>

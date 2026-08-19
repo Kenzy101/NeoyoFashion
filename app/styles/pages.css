@@ -329,11 +329,24 @@
     align-items: start;
   }
 
-  /* The purchase panel stays with the visitor through the gallery */
+  /* The purchase panel stays with the visitor through the gallery.
+
+     It has to be able to outgrow the screen: opening the size chart and
+     the measurement form makes this column taller than any laptop, and a
+     sticky element that exceeds the viewport pins its own foot off-screen
+     — the "Add to bag" button would become unreachable. Capping the
+     height and letting it scroll internally costs nothing when the panel
+     is short, and rescues it when it is not. */
   .product__aside {
     position: sticky;
     inset-block-start: var(--space-2xl);
     padding-block-start: var(--space-lg);
+    max-block-size: calc(100svh - var(--space-2xl) - var(--space-lg));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    /* Room for the scrollbar so text never sits under it. */
+    padding-inline-end: var(--space-2xs);
+    scrollbar-width: thin;
   }
 }
 
@@ -1008,4 +1021,142 @@
 .foot__ccy {
   justify-self: start;
   margin-block-start: var(--space-2xs);
+}
+
+/* =============================================================
+   SIZE CHART — the house's own table, disclosed on request
+   ============================================================= */
+
+.chart {
+  display: grid;
+  gap: var(--space-sm);
+  padding-block: var(--space-sm);
+  border-block: var(--border-hair) solid var(--line-soft);
+}
+
+.chart__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  min-height: 2.75rem;
+  padding: 0;
+  font-size: var(--text-hairline);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--track-hairline);
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  transition: color var(--dur-quick) var(--ease-glide);
+}
+
+.chart__toggle:hover,
+.chart__toggle:focus-visible {
+  color: var(--accent-ink);
+}
+
+.chart__mark {
+  font-size: var(--text-body);
+  line-height: 1;
+  color: var(--accent-ink);
+}
+
+.chart__body {
+  display: grid;
+  gap: var(--space-sm);
+  animation: m-fade-in var(--dur-calm) var(--ease-glide) both;
+}
+
+/* Seven columns of inches will not fit a phone. The table scrolls inside
+   its own container rather than widening the page; `tabIndex` on the
+   wrapper makes that scroll reachable from the keyboard. */
+.chart__scroll {
+  overflow-x: auto;
+  min-inline-size: 0;
+  scrollbar-width: thin;
+}
+
+.chart__table {
+  inline-size: 100%;
+  min-inline-size: 30rem;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart__table th,
+.chart__table td {
+  padding: var(--space-2xs) var(--space-xs);
+  text-align: left;
+  border: var(--border-hair) solid var(--line-soft);
+  font-size: var(--text-caption);
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+
+.chart__table thead th {
+  font-family: var(--font-body);
+  font-size: var(--text-hairline);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--track-hairline);
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--surface-recessed);
+}
+
+.chart__table tbody th {
+  font-weight: var(--weight-medium);
+  color: var(--ink);
+}
+
+/* The visitor's current fit, so the chart answers a question in context */
+.chart__table tbody tr[data-active="true"] th,
+.chart__table tbody tr[data-active="true"] td {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--ink);
+}
+
+.chart__height {
+  white-space: nowrap;
+}
+
+.chart__note {
+  font-size: var(--text-caption);
+  line-height: 1.7;
+  color: var(--ink-muted);
+  max-width: var(--measure-wide);
+}
+
+/* =============================================================
+   MEASUREMENTS — the custom order
+   ============================================================= */
+
+.measure {
+  display: grid;
+  border: 0;
+  padding: var(--space-md) 0 0;
+  margin: 0;
+}
+
+.measure__legend {
+  font-size: var(--text-hairline);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--track-hairline);
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  padding: 0;
+}
+
+.measure__grid {
+  display: grid;
+  gap: var(--space-md);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+}
+
+.measure__grid > * {
+  min-inline-size: 0;
+}
+
+/* The Custom chip is a word among numbers, so it is given room rather
+   than being squeezed to the width of a two-digit size. */
+.swatch[data-wide="true"] {
+  min-inline-size: 5.5rem;
 }

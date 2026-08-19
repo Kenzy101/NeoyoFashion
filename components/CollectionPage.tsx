@@ -78,15 +78,6 @@ export default function CollectionPage({
         </Reveal>
       ) : null}
 
-      <Reveal kind="rise">
-        <section className="u-page u-page--railed" style={{ paddingBlockEnd: "var(--space-3xl)" }}>
-          <p className="eyebrow" style={{ marginBottom: "var(--space-md)" }}>
-            Shot in
-          </p>
-          <p className="u-body-lg">{collection.register}</p>
-        </section>
-      </Reveal>
-
       <Onward current={`/${id}`} />
       <Footer />
     </>
