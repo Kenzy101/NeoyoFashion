@@ -33,7 +33,7 @@ const MOTION = [
   { token: "--dur-quick", value: "260ms", use: "Hover states, small controls." },
   { token: "--dur-calm", value: "520ms", use: "The default. Links, fields, cards." },
   { token: "--dur-slow", value: "900ms", use: "Menu items, veil lift." },
-  { token: "--dur-cinema", value: "1400ms", use: "Scroll reveals, loader curtain." },
+  { token: "--dur-cinema", value: "1400ms", use: "Scroll reveals, dissolves." },
   { token: "--dur-epic", value: "2200ms", use: "Image pushes, drawn rules." },
   { token: "--ease-glide", value: "cubic-bezier(.22,1,.36,1)", use: "Default. Everything that arrives." },
   { token: "--ease-veil", value: "cubic-bezier(.65,0,.35,1)", use: "Symmetric wipes." },

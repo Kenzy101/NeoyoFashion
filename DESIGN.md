@@ -174,7 +174,7 @@ resolves, which is a horizontal scrollbar.
 | `--dur-quick` | 260ms | Hover states, small controls |
 | `--dur-calm` | 520ms | **The default.** Links, fields, cards |
 | `--dur-slow` | 900ms | Menu items, veil lift |
-| `--dur-cinema` | 1400ms | Scroll reveals, loader curtain |
+| `--dur-cinema` | 1400ms | Scroll reveals, dissolves |
 | `--dur-epic` | 2200ms | Image pushes, drawn rules |
 | `--ease-glide` | `cubic-bezier(.22,1,.36,1)` | **Default.** Everything that arrives |
 | `--ease-veil` | `cubic-bezier(.65,0,.35,1)` | Symmetric wipes |
@@ -610,7 +610,7 @@ app/
     base.css          reset, type utilities, layout utilities, reduced motion
     motion.css        reveals, keyframes, motion utilities
     components.css    plate, button, card, field, rule, ticker, tag, spec
-    chrome.css        loader, cursor, rail, trigger, menu, veil, slideshow
+    chrome.css        cursor, rail, trigger, menu, veil, cinema
     pages.css         page-level composition
   core/ ease/ jewelry/ accessories/     collections
   vip/ campaigns/ about/ journal/       editorial

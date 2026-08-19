@@ -1,75 +1,8 @@
 /* =============================================================
    NEOYO — SITE CHROME
-   Loader · Cursor · Logo rail · Menu trigger · Fullscreen menu
+   Cursor · Logo rail · Menu trigger · Fullscreen menu
    Page-transition veil · Cinematic slideshow
    ============================================================= */
-
-/* =============================================================
-   LOADER — first impression. Espresso ground, gold wordmark,
-   a hairline that fills. Lifts away as a curtain, never a spinner.
-   ============================================================= */
-
-.loader {
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-loader);
-  display: grid;
-  place-items: center;
-  background: var(--neoyo-espresso-veil);
-  transition: opacity var(--dur-cinema) var(--ease-veil),
-    visibility var(--dur-cinema) var(--ease-veil),
-    clip-path var(--dur-cinema) var(--ease-veil);
-  clip-path: inset(0 0 0 0);
-}
-
-.loader[data-state="done"] {
-  opacity: 0;
-  visibility: hidden;
-  clip-path: inset(0 0 100% 0);
-  pointer-events: none;
-}
-
-.loader__inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-lg);
-}
-
-.loader__mark {
-  font-family: var(--font-display);
-  font-size: clamp(1.75rem, 1rem + 3.4vw, 3.25rem);
-  font-weight: var(--weight-light);
-  letter-spacing: 0.42em;
-  text-indent: 0.42em; /* optical centring against the tracking */
-  color: var(--neoyo-gold-light);
-  animation: m-breath 2.6s var(--ease-cinema) infinite;
-}
-
-.loader__rule {
-  inline-size: clamp(6rem, 22vw, 13rem);
-  block-size: 1px;
-  background: color-mix(in srgb, var(--neoyo-gold) 30%, transparent);
-  overflow: hidden;
-}
-
-.loader__fill {
-  display: block;
-  block-size: 100%;
-  inline-size: 100%;
-  background: var(--neoyo-gold-light);
-  transform-origin: left center;
-  transform: scaleX(var(--loader-progress, 0));
-  transition: transform var(--dur-calm) var(--ease-glide);
-}
-
-.loader__word {
-  font-size: var(--text-hairline);
-  letter-spacing: var(--track-hairline);
-  text-transform: uppercase;
-  /* 62% is the floor that still clears AA on the espresso veil. */
-  color: color-mix(in srgb, var(--neoyo-bone-white) 62%, transparent);
-}
 
 /* =============================================================
    CURSOR — a gold ring that trails a dot.

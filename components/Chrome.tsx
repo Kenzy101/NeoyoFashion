@@ -4,14 +4,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Cursor from "./Cursor";
-import Loader from "./Loader";
 import Menu from "./Menu";
 import Veil from "./Veil";
 import { BRAND } from "@/lib/brand";
 
 /**
  * The persistent chrome: logo rail, menu trigger, fullscreen menu,
- * cursor, page-transition veil and the loading screen.
+ * cursor and the page-transition veil.
+ *
+ * There is deliberately no loading screen. The landing film is the first
+ * thing the visitor should meet, and a curtain in front of it delays the
+ * only moment the page exists to deliver.
  *
  * Mounted once in the root layout so none of it remounts on navigation —
  * the rail and trigger stay put while pages change beneath them.
@@ -34,7 +37,6 @@ export default function Chrome() {
 
   return (
     <>
-      <Loader />
       <Cursor />
       <Veil />
 
